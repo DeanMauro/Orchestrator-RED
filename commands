@@ -1,0 +1,7 @@
+npm init
+
+npm link
+cd ~/.node-red
+npm link ...
+
+npm rm --global ...
