@@ -6,6 +6,7 @@ class Orchestrator {
   constructor(tenant, user, pass, url) {
   	this.url = url || 'https://platform.uipath.com/';
   	Orchestrator.token = this.getToken(tenant, user, pass);
+    Orchestrator.start = Date.now();
   }
 
 
@@ -42,6 +43,18 @@ class Orchestrator {
     	let arr = JSON.parse(xhttp.responseText);
     	return arr["result"]
     }
+  }
+
+
+  static refreshToken(node) {
+      if (Orchestrator.start == null || (Date.now() - Orchestrator.start) >= 1680) {
+          var orch = new Orchestrator(node.credentials.tenant, 
+                                      node.credentials.username, 
+                                      node.credentials.password,
+                                      node.credentials.url);
+          
+          node.context().flow.set("orch", orch);
+      }
   }
 
 }
