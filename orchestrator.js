@@ -5,7 +5,7 @@ class Orchestrator {
   
   constructor(tenant, user, pass, url) {
   	this.url = url || 'https://platform.uipath.com/';
-  	Orchestrator.token = Orchestrator.token || this.getToken(tenant, user, pass);
+  	Orchestrator.token = this.getToken(tenant, user, pass);
   }
 
 

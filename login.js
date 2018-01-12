@@ -1,30 +1,35 @@
 require('./orchestrator.js');
+
 module.exports = function(RED) {
     function LoginNode(config) {
         RED.nodes.createNode(this,config);
-        var node = this;
 
-        node.on('input', function(msg) {
-        	var tenant = node.credentials.tenant;
-            var user = node.credentials.username;
-            var pass = node.credentials.password;
+        this.on('input', function(msg) {
+        	// Get credentials
+        	var tenant = this.credentials.tenant;
+            var user = this.credentials.username;
+            var pass = this.credentials.password;
 
+            // Login and persist Orchestrator session
             var orch = new Orchestrator(tenant, user, pass);
-
             this.context().flow.set("orch", orch);
-            
-            if(Orchestrator.token)
+
+            // Display connection status
+            if (Orchestrator.token) {
             	this.status({fill:"green",shape:"dot",text:"connected"});
-            else {
+            } else {
             	this.status({fill:"red",shape:"ring",text:"unsuccessful"});
             	this.error("Login Unsuccessful");
             }
 
-            this.send(Orchestrator.token != undefined);
+            // Output status
+            this.send(Orchestrator.token != null);
         });
     }
+    
     RED.nodes.registerType("login",LoginNode, {
     	credentials: {
+    	 tenant: {type: "text"},
          username: {type:"text"},
          password: {type:"password"}
      }
