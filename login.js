@@ -12,7 +12,15 @@ module.exports = function(RED) {
             var orch = new Orchestrator(tenant, user, pass);
 
             this.context().flow.set("orch", orch);
-            console.log(Orchestrator.token);
+            
+            if(Orchestrator.token)
+            	this.status({fill:"green",shape:"dot",text:"connected"});
+            else {
+            	this.status({fill:"red",shape:"ring",text:"unsuccessful"});
+            	this.error("Login Unsuccessful");
+            }
+
+            this.send(Orchestrator.token != undefined);
         });
     }
     RED.nodes.registerType("login",LoginNode, {
