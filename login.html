@@ -2,12 +2,14 @@
     RED.nodes.registerType('login',{
         category: 'orchestrator',
         color: '#2573b3',
-        icon: "images/uiLogo.png",
+        icon: "uiLogo.png",
         credentials: {
             tenant: {type:"text"},
             username: {type:"text"},
             password: {type:"password"}
         },
+        inputs: 1,
+        outputs: 1,
         label: function() { return this.name||"login"; }
     });
 </script>
