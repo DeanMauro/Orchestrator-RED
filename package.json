@@ -19,7 +19,7 @@
   "node-red" : {
         "nodes": {
             "login": "intents/login.js",
-            "get-stats": "intents/get-stats.js"
+            "request": "intents/request.js"
         }
     }
 }

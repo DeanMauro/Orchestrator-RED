@@ -1,13 +1,14 @@
 module.exports = function(RED) {
-    function GetStatsNode(config) {
+    function RequestNode(config) {
         RED.nodes.createNode(this,config);
 
         this.on('input', function(msg) {
-        	Orchestrator.refreshToken(this);
+        	// Orchestrator.refreshToken(this);
 
             // Put call here
+            this.send("There is 1 Process");
         });
     }
     
-    RED.nodes.registerType("get-stats", GetStatsNode);
+    RED.nodes.registerType("request", RequestNode);
 }

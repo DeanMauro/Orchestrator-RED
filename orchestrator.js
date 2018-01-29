@@ -5,7 +5,7 @@ class Orchestrator {
   
   constructor(tenant, user, pass, url) {
   	this.url = url || 'https://platform.uipath.com/';
-  	Orchestrator.token = this.getToken(tenant, user, pass);
+  	Orchestrator.token = Orchestrator.token || this.getToken(tenant, user, pass);
     Orchestrator.start = Date.now();
   }
 
@@ -30,7 +30,7 @@ class Orchestrator {
 	        	p["callback"](result);
 			}
 	    };
-	}
+	  }
 
 	// Compose request
     xhttp.open(p["type"].toUpperCase(), this.url + p["extension"], !!Orchestrator.token);

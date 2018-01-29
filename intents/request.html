@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    RED.nodes.registerType('request',{
+        category: 'orchestrator',
+        color: '#FFC300',
+        icon: "uipathLogo.png",
+        inputs: 1,
+        outputs: 1,
+        label: function() { return this.name||"request"; }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="request">
+    <div class="form-row">
+         <label for="node-input-caller">Caller</label>
+         <input type="text" id="node-input-caller">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="request">
+    <p>Retrieves information from Orchestrator.</p>
+</script>
