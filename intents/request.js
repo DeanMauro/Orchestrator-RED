@@ -3,11 +3,32 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
 
         this.on('input', function(msg) {
-        	// Orchestrator.refreshToken(this);
+        	Orchestrator.refreshToken();
+            var orch = this.context().flow.get("orch");
+            var node = this;
 
-            // Put call here
-            this.send("There is 1 Process");
+            // Standard request
+            if (msg.payload.action && msg.payload.extension) {
+
+                var callBack = function(x) { node.send(x); };
+                
+                orch.request({ type: msg.payload.action, 
+                               extension: msg.payload.extension,
+                               body: msg.payload.body || "",
+                               callback: callBack });
+
+            // Bad input
+            } else {
+                this.error("Bad input. Please refer to the info tab for formatting.", msg);
+                this.send({ result: null,
+                            success: false,
+                            error: {
+                                message: "Bad Input."
+                            }});
+            }
         });
+
+
     }
     
     RED.nodes.registerType("request", RequestNode);

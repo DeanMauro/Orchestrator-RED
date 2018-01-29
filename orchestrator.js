@@ -47,14 +47,18 @@ class Orchestrator {
 
 
   static refreshToken(node) {
-      if (Orchestrator.start == null || (Date.now() - Orchestrator.start) >= 1680) {
-          var orch = new Orchestrator(node.credentials.tenant, 
-                                      node.credentials.username, 
-                                      node.credentials.password,
-                                      node.credentials.url);
-          
-          node.context().flow.set("orch", orch);
-      }
+    if (node) Orchestrator.node = node;
+
+    if (!Orchestrator.start || (Date.now() - Orchestrator.start) >= 1680) {
+      var creds = Orchestrator.node.credentials;
+
+      var orch = new Orchestrator(creds.tenant, 
+                                  creds.username, 
+                                  creds.password,
+                                  creds.url);
+        
+      Orchestrator.node.context().flow.set("orch", orch);
+    }
   }
 
 }
