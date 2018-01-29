@@ -49,7 +49,7 @@ class Orchestrator {
   static refreshToken(node) {
     if (node) Orchestrator.node = node;
 
-    if (!Orchestrator.start || (Date.now() - Orchestrator.start) >= 1680) {
+    if (!Orchestrator.start || (Date.now() - Orchestrator.start) >= 1680000) {
       var creds = Orchestrator.node.credentials;
 
       var orch = new Orchestrator(creds.tenant, 
