@@ -18,8 +18,8 @@
   "license": "ISC",
   "node-red" : {
         "nodes": {
-            "login": "intents/login.js",
-            "request": "intents/request.js"
+            "login": "nodes/login.js",
+            "request": "nodes/request.js"
         }
     }
 }

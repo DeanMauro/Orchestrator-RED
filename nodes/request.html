@@ -1,0 +1,333 @@
+
+<!-- DESCRIPTION -->
+<!-- This is the text that appears in the info tab -->
+<script type="text/x-red" data-help-name="request">
+    <p>A direct line to UiPath's Orchestrator.</p>
+
+    <h3>Details</h3>
+    <dl class="message-properties">
+        <p>You can send a request to Orchestrator in one of two ways: by inputting a JSON structure with the appropriate fields or by filling in the node's properties. Note that the properties will supersede the input.</p>
+    </dl>
+
+    <br>
+
+    <h3>Input Option</h3>
+        <dl class="message-properties">
+            <h6>JSON structure with the following keys:</h6>
+            <dt>action<span class="property-type">String</span></dt>
+            <dt>extension<span class="property-type">String</span></dt>
+            <dt>body<span class="property-type">JSON</span></dt>
+            <h6>Example</h6>
+            <pre>
+{
+ "action": "POST",
+ "extension": "odata/Assets",
+ "body": {
+           "Name": "Poe",
+           "Description": "Lo'"
+         }
+}
+            </pre>
+        </dl>
+
+    <br>
+
+    <h3>Properties Option</h3>
+    <dl class="message-properties">
+        <h6>TO DO: Add Description</h6>
+    </dl>
+
+    <br>
+
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>JSON Response<span class="property-type">JSON</span></dt>
+    </dl>
+</script>
+
+
+<!-- PROPERTIES -->
+<!-- The fields that appear in a node's Edit box -->
+<script type="text/x-red" data-template-name="request">
+    <div class="form-row">
+        <label for="category"><i class="fa fa-th"></i> Category</label>
+        <select id="category">
+            <option value="UseInput">Use Input</option>
+            <option value="Alerts">Alerts</option>
+            <option value="Assets">Assets</option>
+            <option value="AuditLogs">Audit Logs</option>
+            <option value="Environments">Environments</option>
+            <option value="Jobs">Jobs</option>
+            <option value="OrganizationUnits">Organization Units</option>
+            <option value="Permissions">Permissions</option>
+            <option value="Processes">Processes</option>
+            <option value="ProcessSchedules">Process Schedules</option>
+            <option value="QueueDefinitions">Queue Definitions</option>
+            <option value="QueueItemComments">Queue Item Comments</option>
+            <option value="QueueItems">Queue Items</option>
+            <option value="QueueProcessingRecords">Queue Processing Records</option>
+            <option value="Queues">Queues</option>
+            <option value="Releases">Releases</option>
+            <option value="RobotLogs">RobotLogs</option>
+            <option value="Robots">Robots</option>
+            <option value="RobotsService">Robots Service</option>
+            <option value="Roles">Roles</option>
+            <option value="Sessions">Sessions</option>
+            <option value="Stats">Stats</option>
+            <option value="Status">Status</option>
+            <option value="Tenants">Tenants</option>
+            <option value="Users">Users</option>
+        </select>
+    </div>
+
+    <div class="form-row useCategory animated">
+        <label for="action"><i class="fa fa-bolt"></i> Action</label>
+        <select id="action">
+            <!-- General -->
+            <option value="GetAll" class="Alerts Assets AuditLogs Environments Jobs OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
+            <option value="GetOne" class="Environments Jobs OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments  QueueItems QueueProcessingRecords Queues Releases Robots Tenants Users">Get One</option>
+            <option value="Create" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Robots Roles Tenants Users">Create</option>
+            <option value="Delete" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItems QueueProcessingRecords Releases Robots Roles Tenants Users">Delete</option>
+            <option value="Edit" class="Assets OrganizationUnits ProcessSchedules QueueDefinitions Releases Robots Roles Tenants Users">Edit</option>
+            <option value="Update" class="Environments">Update</option>
+            <!-- Alerts -->
+            <option value="GetUnreadCount" class="Alerts">Get Unread Count</option>
+            <option value="MarkAsRead" class="Alerts">Mark As Read</option>
+            <!-- Assets -->
+            <option value="GetRobotAsset" class="Assets">Get Robot-Associated Asset</option>
+            <!-- Environments -->
+            <option value="GetRobotsForEnvironment" class="Environments">Get Robots in Environment</option>
+            <option value="AddRobot" class="Environments">Add Robot</option>
+            <option value="RemoveRobot" class="Environments">Remove Robot</option>
+            <!-- Jobs -->
+            <option value="PostEntity" class="Jobs">Post New Entity to EntitySet Jobs</option>
+            <option value="ReplaceEntity" class="Jobs">Replace Entity in EntitySet Jobs</option>
+            <option value="StartJob" class="Jobs">Start Job</option>
+            <option value="StopJob" class="Jobs">Stop Job</option>
+            <!-- Organization Units -->
+            <option value="GetUsersForUnit" class="OrganizationUnits">Get Users for Unit</option>
+            <option value="GetUserIdsForUnit" class="OrganizationUnits">Get User Ids for Unit</option>
+            <option value="SetUsers" class="OrganizationUnits">Set Users</option>
+            <!-- Processes -->
+            <option value="DeletePackage" class="Processes">Delete Package</option>
+            <option value="GetProcessVersions" class="Processes">Get Process Versions</option>
+            <!-- Process Schedules -->
+            <option value="EnableDisable" class="ProcessSchedules">Enable/Disable</option>
+            <option value="GetRobotIds" class="ProcessSchedules">Get Robot Ids</option>
+            <!-- Queue Item Comments -->
+            <option value="ReplaceEntity" class="QueueItemComments">Replace Entity in EntitySet QueueItemComments</option>
+            <option value="GetHistory" class="QueueItemComments">Get History</option>
+            <!-- Queue Items -->
+            <option value="PostEntity" class="QueueItems">Post Entity to EntitySet QueueItems</option>
+            <option value="UpdateEntity" class="QueueItems">Update Entity in EntitySet QueueItems</option>
+            <option value="GetItemProcessingHistory" class="QueueItems">Get Item Processing History</option>
+            <option value="SetItemReviewStatus" class="QueueItems">Set Item Review Status</option>
+            <option value="DeleteBulk" class="QueueItems">Set Statuses to Deleted</option>
+            <option value="SetTransActionProgress" class="QueueItems">Update Status to 'In Progress'</option>
+            <!-- Queue Processing Records -->
+            <option value=RetrieveLastDaysProcessingRecords" class="QueueProcessingRecords">Get Records for Last X Days</option>
+            <option value="RetrieveQueuesProcessingStatus" class="QueueProcessingRecords">Get Processing Status for All Queues</option>
+            <!-- Queues -->
+            <option value="StartTransaction" class="Queues">Start Transaction</option>
+            <option value="SetTransactionResult" class="Queues">Set Result of Transaction</option>
+            <!-- Releases -->
+            <option value="UpdateToSpecific" class="Releases">Update Package Version to a Given Release</option>
+            <option value="UpdateToLatest" class="Releases">Update Package Version to Latest Release</option>
+            <option value="RollbackToPrevious" class="Releases">Revert Package Version to Most Recent</option>
+            <!-- Robot Logs -->
+            <option value="GetReports" class="RobotLogs">Get Reports</option>
+            <!-- Robots -->
+            <option value="GetMachineName" class="Robots">Get Machine Name to License Key Mappings</option>
+            <!-- Stats -->
+            <option value="GetCounts" class="Stats">Get Entity Counts</option>
+            <option value="GetRobots" class="Stats">Get Robot Counts</option>
+            <option value="GetJobs" class="Stats">Get Job Counts</option>
+            <!-- Users -->
+            <option value="GetPermissions" class="Users">Get User Permissions</option>
+            <option value="GetCurrentUserDetails" class="Users">Get Details About Current User</option>
+            <option value="AssociateDissociateRole" class="Users">Associate/Dissociate User from Role</option>
+            <option value="AssociateGroupWithRoles" class="Users">Import Users and Associate Them with Given Roles</option>
+            <option value="Change Password" class="Users">Change User's Password</option>
+        </select>
+    </div>
+
+    <div class="form-row node-input-rule-container-row useCategory animated">
+        <label for="node-input-param-container">Parameters</label>
+        <ol id="node-input-param-container"></ol>
+    </div>
+</script>
+
+
+<!-- JAVASCRIPT -->
+<!-- Controls the setup and persistence of a node -->
+<script type="text/javascript">
+
+    RED.nodes.registerType('request',{
+        category: 'orchestrator',
+        color: '#FF851B',
+        defaults: {
+            name: {value: ""},
+            category: {value:"Use Input"},
+            action: {value: ""},
+            params: {value: [{key: "", type: "str", value: ""}]}
+        },
+        icon: "uipathLogo.png",
+        inputs: 1,
+        outputs: 1,
+        label: function() { return this.name || "request"; },
+        oneditprepare: function() {
+
+            // Create structure for params list
+            $('#node-input-param-container').editableList({
+                addItem: function(row,i,data) {
+                    
+                    // Ensure no overflow within row
+                    row.css( { overflow: 'hidden', whiteSpace: 'nowrap' } );
+
+                    // Add new key-value pair
+                    var key = $('<input type="text" class="rowKey" placeholder="Key">').appendTo(row);
+                    if (data.key) $(key).val(data.key);
+
+                    var value = $('<input type="text" class="rowVal node-input-params-value" placeholder="Value">').appendTo(row);
+                    $(value).typedInput({
+                        default: "str",
+                        types: ["str","num","bool","json","re","date","msg","flow","global"]
+                    });
+                    if (data.value) {
+                        $(value).typedInput('type', data.type);
+                        $(value).typedInput('value', data.value);
+                    }
+                    
+                },
+                removable: true,
+                sortable: true
+            });
+
+
+            // Fill in persisted values
+            $('#category').val(this.category || "UseInput");
+            $('#action').val(this.action || "");
+            try {
+                for (var row of this.params)
+                    $("#node-input-param-container").editableList('addItem', row);
+            } catch(TypeError) {}
+
+            // Fill in appropriate actions and set field visibility...
+            function checkCategory(a, b) {
+                if ($('#category').val() == 'UseInput') {
+                    a();
+                } else {
+                    var category = $('#category').val();
+                    $('#action option:not(.'+category+')').hide();
+                    $('#action option.'+category).show();
+
+                    if ($(".useCategory").css('opacity') < 1) b();
+                }
+            }
+
+            // ...when opening node
+            checkCategory(()=>{ $(".useCategory").css('opacity', 0); },
+                          ()=>{ $(".useCategory").css('opacity', 1); });
+
+            // ...or when the category changes
+            $("#category").off().on('change', function() {
+                $("#action").val('');   // Clear selected action
+
+                checkCategory(()=>{ $(".useCategory").removeClass('flipInY').addClass('flipOutY'); },
+                              ()=>{ $(".useCategory").removeClass('flipOutY').addClass('flipInY'); });
+            });
+
+        },
+        oneditsave: function() {
+            var node = this;
+            node.category = $('#category').val();   // Save Category
+            node.action = $("#action").val();       // Save Action
+            node.params = [];
+           
+            // Save Parameters
+            var params = $("#node-input-param-container").editableList('items');
+            params.each(function(i) {
+                var row = {
+                    key: $(this).find(".rowKey").val(),
+                    type: $(this).find(".node-input-params-value").typedInput('type'),
+                    value: $(this).find(".node-input-params-value").typedInput('value')
+                };
+                
+                node.params.push(row);
+            });
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-input-rule-container-row)");
+            var height = size.height;
+            for (var i=0; i<rows.size(); i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-input-rule-container-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $("#node-input-param-container").editableList('height',height);
+        }
+    });
+</script>
+
+
+<!-- CSS -->
+<!-- Style, baby -->
+<style>
+    .rowKey, .red-ui-typedInput-container {
+        width: 48% !important;
+        margin-right: 2%; 
+    }
+
+    .useCategory {
+        opacity: 0;
+    }
+
+    .animated {
+      animation-duration: 0.75s;
+      animation-fill-mode: both;
+    }
+
+    .flipInY {
+      backface-visibility: visible !important;
+      animation-name: flipInY;
+    }
+
+    .flipOutY {
+      backface-visibility: visible !important;
+      animation-name: flipOutY;
+    }
+
+    @keyframes flipInY {
+      from {
+        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+        animation-timing-function: ease-in;
+        opacity: 0;
+      }
+
+      50% {
+        transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+        opacity: 1;
+      }
+
+      to {
+        transform: perspective(400px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes flipOutY {
+      from {
+        transform: perspective(400px);
+      }
+
+      30% {
+        transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+        opacity: 1;
+      }
+
+      to {
+        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+        opacity: 0;
+      }
+    }
+</style>
