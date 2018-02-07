@@ -6,6 +6,8 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
 
         this.on('input', function(msg) {
+
+            Orchestrator.start = 1517020336192;
         	Orchestrator.refreshToken();
             var orch = this.context().flow.get("orch");
             var node = this;
