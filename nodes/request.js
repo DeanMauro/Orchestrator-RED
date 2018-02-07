@@ -1,3 +1,6 @@
+require('../lib/orchestrator.js');
+require('../lib/api.js');
+
 module.exports = function(RED) {
     function RequestNode(config) {
         RED.nodes.createNode(this,config);
@@ -6,29 +9,66 @@ module.exports = function(RED) {
         	Orchestrator.refreshToken();
             var orch = this.context().flow.get("orch");
             var node = this;
+            var body;
+            var callback = function(x, status) { 
+                                        if (status < 300) node.send(x);
+                                        else errorOut(node, x);
+                                    };
 
-            // Standard request
-            if (msg.payload.action && msg.payload.extension) {
+            // Properties Input
+            if (config.category != "UseInput") {
+                try {
+                    // Convert params provided through msg variable
+                    if (config.category.startsWith("Msg")) {
+                        config.category = msg.payload.category;
+                        config.action = msg.payload.action;
+                        body = msg.payload.params;
+                    } else {
+                        body = Api.convertParams(config.params);
+                    }
+                    console.log(body);
 
-                var callBack = function(x) { node.send(x); };
+                    // Get endpoint info
+                    var endpoint = Api[config.category](config.action);
+
+                    // Add path params if needed
+                    var extension = (endpoint[1].includes("{")) ? Api.fillPath(endpoint[1], body) : endpoint[1];
+
+                    // Sanitize body
+                    body = (body && Object.keys(body).length > 0) ? body : "";
+                    
+                    // Fire!
+                    orch.request({ type: endpoint[0], 
+                                   extension: extension,
+                                   body: JSON.stringify(body),
+                                   callback: callback });
+                } catch(e) {
+                    errorOut(node, e);
+                }
+            }
+
+            // JSON Input
+            else if (msg.payload.action && msg.payload.extension) {
                 
                 orch.request({ type: msg.payload.action, 
                                extension: msg.payload.extension,
                                body: msg.payload.body || "",
-                               callback: callBack });
+                               callback: callback });
+            } 
 
-            // Bad input
-            } else {
-                this.error("Bad input. Please refer to the info tab for formatting.", msg);
-                this.send({ result: null,
-                            success: false,
-                            error: {
-                                message: "Bad Input."
-                            }});
+            // Bad Input
+            else {
+                errorOut(this, "Bad input. Please refer to the info tab for formatting.");
             }
         });
+    }
 
-
+    function errorOut(node, error) {
+        node.error(error);
+        node.send({ result: null,
+                    success: false,
+                    error: { message: "Error. Can't proceed." }
+                 });
     }
     
     RED.nodes.registerType("request", RequestNode);

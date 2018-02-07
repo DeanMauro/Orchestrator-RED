@@ -53,6 +53,7 @@
         <label for="category"><i class="fa fa-th"></i> Category</label>
         <select id="category">
             <option value="UseInput">Use Input</option>
+            <option value="MsgPayload">Msg.payload.category</option>
             <option value="Alerts">Alerts</option>
             <option value="Assets">Assets</option>
             <option value="AuditLogs">Audit Logs</option>
@@ -68,13 +69,11 @@
             <option value="QueueProcessingRecords">Queue Processing Records</option>
             <option value="Queues">Queues</option>
             <option value="Releases">Releases</option>
-            <option value="RobotLogs">RobotLogs</option>
+            <option value="RobotLogs">Robot Logs</option>
             <option value="Robots">Robots</option>
-            <option value="RobotsService">Robots Service</option>
             <option value="Roles">Roles</option>
             <option value="Sessions">Sessions</option>
             <option value="Stats">Stats</option>
-            <option value="Status">Status</option>
             <option value="Tenants">Tenants</option>
             <option value="Users">Users</option>
         </select>
@@ -84,8 +83,9 @@
         <label for="action"><i class="fa fa-bolt"></i> Action</label>
         <select id="action">
             <!-- General -->
+            <option value="MsgPayload" class="MsgPayload">Msg.payload.action</option>
             <option value="GetAll" class="Alerts Assets AuditLogs Environments Jobs OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
-            <option value="GetOne" class="Environments Jobs OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments  QueueItems QueueProcessingRecords Queues Releases Robots Tenants Users">Get One</option>
+            <option value="GetOne" class="Environments Jobs OrganizationUnits ProcessSchedules QueueItemComments  QueueItems QueueProcessingRecords Queues Releases Robots Tenants Users">Get One</option>
             <option value="Create" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Robots Roles Tenants Users">Create</option>
             <option value="Delete" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItems QueueProcessingRecords Releases Robots Roles Tenants Users">Delete</option>
             <option value="Edit" class="Assets OrganizationUnits ProcessSchedules QueueDefinitions Releases Robots Roles Tenants Users">Edit</option>
@@ -97,57 +97,59 @@
             <option value="GetRobotAsset" class="Assets">Get Robot-Associated Asset</option>
             <!-- Environments -->
             <option value="GetRobotsForEnvironment" class="Environments">Get Robots in Environment</option>
-            <option value="AddRobot" class="Environments">Add Robot</option>
-            <option value="RemoveRobot" class="Environments">Remove Robot</option>
+            <option value="AddRobot" class="Environments">Associate Robot</option>
+            <option value="RemoveRobot" class="Environments">Dissociate Robot</option>
             <!-- Jobs -->
-            <option value="PostEntity" class="Jobs">Post New Entity to EntitySet Jobs</option>
-            <option value="ReplaceEntity" class="Jobs">Replace Entity in EntitySet Jobs</option>
-            <option value="StartJob" class="Jobs">Start Job</option>
+            <option value="Create" class="Jobs">Post New Entity to EntitySet Jobs</option>
+            <option value="Update" class="Jobs">Replace Entity in EntitySet Jobs</option>
+            <option value="StartJobs" class="Jobs">Start Job</option>
             <option value="StopJob" class="Jobs">Stop Job</option>
             <!-- Organization Units -->
             <option value="GetUsersForUnit" class="OrganizationUnits">Get Users for Unit</option>
             <option value="GetUserIdsForUnit" class="OrganizationUnits">Get User Ids for Unit</option>
             <option value="SetUsers" class="OrganizationUnits">Set Users</option>
             <!-- Processes -->
-            <option value="DeletePackage" class="Processes">Delete Package</option>
+            <option value="Delete" class="Processes">Delete Package</option>
             <option value="GetProcessVersions" class="Processes">Get Process Versions</option>
             <!-- Process Schedules -->
-            <option value="EnableDisable" class="ProcessSchedules">Enable/Disable</option>
-            <option value="GetRobotIds" class="ProcessSchedules">Get Robot Ids</option>
+            <option value="SetEnabled" class="ProcessSchedules">Enable/Disable</option>
+            <option value="GetRobotIdsForSchedule" class="ProcessSchedules">Get Robot Ids</option>
             <!-- Queue Item Comments -->
-            <option value="ReplaceEntity" class="QueueItemComments">Replace Entity in EntitySet QueueItemComments</option>
-            <option value="GetHistory" class="QueueItemComments">Get History</option>
+            <option value="Update" class="QueueItemComments">Replace Entity in EntitySet QueueItemComments</option>
+            <option value="GetQueueItemCommentsHistory" class="QueueItemComments">Get History</option>
             <!-- Queue Items -->
-            <option value="PostEntity" class="QueueItems">Post Entity to EntitySet QueueItems</option>
-            <option value="UpdateEntity" class="QueueItems">Update Entity in EntitySet QueueItems</option>
+            <option value="Create" class="QueueItems">Post Entity to EntitySet QueueItems</option>
+            <option value="Replace" class="QueueItems">Replace Entity in EntitySet QueueItems</option>
+            <option value="Update" class="QueueItems">Update Entity in EntitySet QueueItems</option>
             <option value="GetItemProcessingHistory" class="QueueItems">Get Item Processing History</option>
             <option value="SetItemReviewStatus" class="QueueItems">Set Item Review Status</option>
             <option value="DeleteBulk" class="QueueItems">Set Statuses to Deleted</option>
-            <option value="SetTransActionProgress" class="QueueItems">Update Status to 'In Progress'</option>
+            <option value="SetTransactionProgress" class="QueueItems">Update Status to 'In Progress'</option>
             <!-- Queue Processing Records -->
             <option value=RetrieveLastDaysProcessingRecords" class="QueueProcessingRecords">Get Records for Last X Days</option>
             <option value="RetrieveQueuesProcessingStatus" class="QueueProcessingRecords">Get Processing Status for All Queues</option>
             <!-- Queues -->
             <option value="StartTransaction" class="Queues">Start Transaction</option>
+            <option value="AddQueueItem" class="Queues">Add a Queue Item</option>
             <option value="SetTransactionResult" class="Queues">Set Result of Transaction</option>
             <!-- Releases -->
-            <option value="UpdateToSpecific" class="Releases">Update Package Version to a Given Release</option>
-            <option value="UpdateToLatest" class="Releases">Update Package Version to Latest Release</option>
-            <option value="RollbackToPrevious" class="Releases">Revert Package Version to Most Recent</option>
+            <option value="UpdateToSpecificPackageVersion" class="Releases">Update Package Version to a Given Release</option>
+            <option value="UpdateToLatestPackageVersion" class="Releases">Update Package Version to Latest Release</option>
+            <option value="RollbackToPreviousReleaseVersion" class="Releases">Revert Package Version to Most Recent</option>
             <!-- Robot Logs -->
-            <option value="GetReports" class="RobotLogs">Get Reports</option>
+            <option value="Reports" class="RobotLogs">Get Reports</option>
             <!-- Robots -->
             <option value="GetMachineName" class="Robots">Get Machine Name to License Key Mappings</option>
             <!-- Stats -->
-            <option value="GetCounts" class="Stats">Get Entity Counts</option>
-            <option value="GetRobots" class="Stats">Get Robot Counts</option>
-            <option value="GetJobs" class="Stats">Get Job Counts</option>
+            <option value="GetCountStats" class="Stats">Get Entity Counts</option>
+            <option value="GetSessionsStats" class="Stats">Get Robot Counts</option>
+            <option value="GetJobsStats" class="Stats">Get Job Counts</option>
             <!-- Users -->
-            <option value="GetPermissions" class="Users">Get User Permissions</option>
-            <option value="GetCurrentUserDetails" class="Users">Get Details About Current User</option>
-            <option value="AssociateDissociateRole" class="Users">Associate/Dissociate User from Role</option>
-            <option value="AssociateGroupWithRoles" class="Users">Import Users and Associate Them with Given Roles</option>
-            <option value="Change Password" class="Users">Change User's Password</option>
+            <option value="GetCurrentPermissions" class="Users">Get User Permissions</option>
+            <option value="GetCurrentUser" class="Users">Get Details About Current User</option>
+            <option value="ToggleRole" class="Users">Associate/Dissociate User from Role</option>
+            <option value="ImportUsers" class="Users">Import Users and Associate Them with Given Roles</option>
+            <option value="ChangePassword" class="Users">Change User's Password</option>
         </select>
     </div>
 
@@ -242,9 +244,14 @@
             var node = this;
             node.category = $('#category').val();   // Save Category
             node.action = $("#action").val();       // Save Action
-            node.params = [];
-           
+
+            // Save Name
+            var name = (/UseInput|Msg/.test(node.category)) ? "request" : 
+                                                              (node.category + ": " + $("#action :selected").text());
+            node.name = (name.length <= 20) ? name : (name.substring(0,18) + "...");
+            
             // Save Parameters
+            node.params = [];
             var params = $("#node-input-param-container").editableList('items');
             params.each(function(i) {
                 var row = {

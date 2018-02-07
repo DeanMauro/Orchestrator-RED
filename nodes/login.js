@@ -1,4 +1,4 @@
-require('../orchestrator.js');
+require('../lib/orchestrator.js');
 
 module.exports = function(RED) {
 
