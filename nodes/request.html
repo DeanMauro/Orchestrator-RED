@@ -6,14 +6,34 @@
 
     <h3>Details</h3>
     <dl class="message-properties">
-        <p>You can send a request to Orchestrator in one of two ways: by inputting a JSON structure with the appropriate fields or by filling in the node's properties. Note that the properties will supersede the input.</p>
+        <p>You can instruct this node to contact Orchestrator in one of two ways: </p>
+        <ul>
+          <li>by filling in the node's properties OR</li>
+          <li>by inputting a JSON structure with the appropriate fields for an API call.</li>
+        </ul> 
+        <p><i>Note that, if the properties are filled in, inputs will be ignored.</i></p>
+        <p>See the <a href="https://orchestrator.uipath.com/v2018.1/reference">Orchestrator API Guide</a> for a list of available calls.</p>
     </dl>
 
     <br>
 
-    <h3>Input Option</h3>
+
+    <h3>Option 1: Properties</h3>
+    <dl class="message-properties">
+        <h6>Open the node and fill in the following properties:</h6>
+        <dt>Category<span class="property-type">String</span></dt>
+        <dd>The Orchestrator element you wish to interact with. If <code>Use Input</code> is selected, the node will default to Option 2 and expect a JSON input. Otherwise, it will use the selected values.</dd>
+        <dt>Action<span class="property-type">String</span></dt>
+        <dd>The action to take in the above category.</dd>
+        <dt>Parameters<span class="property-type">List</span></dt>
+        <dd>Certain actions require more information. Use the add button to prepare all required parameters.</dd>
+    </dl>
+
+    <br>
+
+    <h3>Option 2: Input</h3>
         <dl class="message-properties">
-            <h6>JSON structure with the following keys:</h6>
+            <h6>Send to the input port a JSON structure with the following keys:</h6>
             <dt>action<span class="property-type">String</span></dt>
             <dt>extension<span class="property-type">String</span></dt>
             <dt>body<span class="property-type">JSON</span></dt>
@@ -32,16 +52,9 @@
 
     <br>
 
-    <h3>Properties Option</h3>
-    <dl class="message-properties">
-        <h6>TO DO: Add Description</h6>
-    </dl>
-
-    <br>
-
     <h3>Output</h3>
     <dl class="message-properties">
-        <dt>JSON Response<span class="property-type">JSON</span></dt>
+        <dt>Orchestrator's Response<span class="property-type">JSON</span></dt>
     </dl>
 </script>
 
