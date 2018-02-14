@@ -18,7 +18,7 @@ module.exports = function(RED) {
             	this.error("Login Unsuccessful");
             }
 
-            this.send(Orchestrator.token);  // Output status
+            this.send({payload: Orchestrator.token});  // Output status
         });
     }
     

@@ -1,9 +1,0 @@
-npm init
-
-npm link
-cd ~/.node-red
-npm link ...
-
-npm rm --global ...
-
-nodemon --watch nodes/ --exec '/usr/local/bin/node-red' -e html

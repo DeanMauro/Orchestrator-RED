@@ -5,8 +5,6 @@ To Set Up:
 
 1. Install `npm`, `node-RED`, and copy all files from this repository into new directory
 
-2. Within the directory, run `npm link`
+2. Within the directory, run `./startHere.sh` to create the project. You only have to do this once.
 
-3. Go wherever *node-RED* was installed (~/.node-red) and run `rpm link orchestrator`. Your application is now linked to *node-RED*.
-
-4. To start *node-RED*, run `node-red` or `/usr/local/bin/node-red`.
+3. To start *Orchestrator-RED*, run `./run.sh`.
