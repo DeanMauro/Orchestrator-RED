@@ -7,8 +7,6 @@ module.exports = function(RED) {
 
         this.on('input', function(msg) {
 
-            Orchestrator.start = 1517020336192;
-        	Orchestrator.refreshToken();
             var orch = this.context().flow.get("orch");
             var node = this;
             var body;
@@ -36,8 +34,8 @@ module.exports = function(RED) {
                     // Get endpoint info
                     var endpoint = Api[config.category](config.action);
 
-                    // Add path params if needed
-                    var extension = (endpoint[1].includes("{")) ? Api.fillPath(endpoint[1], body) : endpoint[1];
+                    // Add path & query params if needed
+                    var extension = Api.fillPath(config.action, endpoint[1], body);
 
                     // Sanitize body
                     body = (body && Object.keys(body).length > 0) ? body : "";
