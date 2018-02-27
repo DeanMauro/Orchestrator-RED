@@ -77,6 +77,7 @@
             <option value="Processes">Processes</option>
             <option value="ProcessSchedules">Process Schedules</option>
             <option value="QueueDefinitions">Queue Definitions</option>
+            <option value="QueueItemEvents">Queue Item Events</option>
             <option value="QueueItemComments">Queue Item Comments</option>
             <option value="QueueItems">Queue Items</option>
             <option value="QueueProcessingRecords">Queue Processing Records</option>
@@ -97,8 +98,8 @@
         <select id="action">
             <!-- General -->
             <option value="MsgPayload" class="MsgPayload">Msg.payload.action</option>
-            <option value="GetAll" class="Alerts Assets AuditLogs Environments Jobs OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
-            <option value="GetOne" class="Environments Jobs OrganizationUnits ProcessSchedules QueueItemComments  QueueItems QueueProcessingRecords Queues Releases Robots Tenants Users">Get One</option>
+            <option value="GetAll" class="Alerts Assets AuditLogs Environments Jobs OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
+            <option value="GetOne" class="Environments Jobs OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases Robots Tenants Users">Get One</option>
             <option value="Create" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Robots Roles Tenants Users">Create</option>
             <option value="Delete" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItems QueueProcessingRecords Releases Robots Roles Tenants Users">Delete</option>
             <option value="Edit" class="Assets OrganizationUnits ProcessSchedules QueueDefinitions Releases Robots Roles Tenants Users">Edit</option>
@@ -106,12 +107,17 @@
             <!-- Alerts -->
             <option value="GetUnreadCount" class="Alerts">Get Unread Count</option>
             <option value="MarkAsRead" class="Alerts">Mark As Read</option>
+            <option value="RaiseProcessAlert" class="Alerts">Raise Process Alert</option>
             <!-- Assets -->
             <option value="GetRobotAsset" class="Assets">Get Robot-Associated Asset</option>
+            <!-- Audit Logs -->
+            <option value="GetAuditLogDetails" class="AuditLogs">Get Audit Log Details</option>
             <!-- Environments -->
             <option value="GetRobotsForEnvironment" class="Environments">Get Robots in Environment</option>
+            <option value="GetRobotIdsForEnvironment" class="Environments">Get Robot Ids in Environment</option>
             <option value="AddRobot" class="Environments">Associate Robot</option>
             <option value="RemoveRobot" class="Environments">Dissociate Robot</option>
+            <option value="SetRobots" class="Environments">Set Robots</option>
             <!-- Jobs -->
             <option value="Create" class="Jobs">Post New Entity to EntitySet Jobs</option>
             <option value="Update" class="Jobs">Replace Entity in EntitySet Jobs</option>
@@ -130,6 +136,8 @@
             <!-- Queue Item Comments -->
             <option value="Update" class="QueueItemComments">Replace Entity in EntitySet QueueItemComments</option>
             <option value="GetQueueItemCommentsHistory" class="QueueItemComments">Get History</option>
+            <!-- Queue Item Events -->
+            <option value="GetQueueItemEventsHistory" class="QueueItemEvents">Get History</option>
             <!-- Queue Items -->
             <option value="Create" class="QueueItems">Post Entity to EntitySet QueueItems</option>
             <option value="Replace" class="QueueItems">Replace Entity in EntitySet QueueItems</option>
@@ -138,6 +146,9 @@
             <option value="SetItemReviewStatus" class="QueueItems">Set Item Review Status</option>
             <option value="DeleteBulk" class="QueueItems">Set Statuses to Deleted</option>
             <option value="SetTransactionProgress" class="QueueItems">Update Status to 'In Progress'</option>
+            <option value="SetItemReviewer" class="QueueItems">Set Item Reviewer</option>
+            <option value="UnsetItemReviewer" class="QueueItems">Unset Item Reviewer</option>
+            <option value="GetReviewers" class="QueueItems">Get Reviewers</option>
             <!-- Queue Processing Records -->
             <option value=RetrieveLastDaysProcessingRecords" class="QueueProcessingRecords">Get Records for Last X Days</option>
             <option value="RetrieveQueuesProcessingStatus" class="QueueProcessingRecords">Get Processing Status for All Queues</option>
@@ -152,17 +163,25 @@
             <!-- Robot Logs -->
             <option value="Reports" class="RobotLogs">Get Reports</option>
             <!-- Robots -->
-            <option value="GetMachineName" class="Robots">Get Machine Name to License Key Mappings</option>
+            <option value="GetMachineNameToLicenseKeyMappings" class="Robots">Get Machine Name to License Key Mappings</option>
+            <!-- Roles -->
+            <option value="GetUsersForRole" class="Roles">Get Users for Role</option>
+            <option value="GetUserIdsForRole" class="Roles">Get User Ids for Role</option>
+            <option value="SetUsers" class="Roles">Set Users</option>
             <!-- Stats -->
             <option value="GetCountStats" class="Stats">Get Entity Counts</option>
             <option value="GetSessionsStats" class="Stats">Get Robot Counts</option>
             <option value="GetJobsStats" class="Stats">Get Job Counts</option>
+            <!-- Tenants -->
+            <option value="SetActive" class="Tenants">Activate/Deactivate</option>
             <!-- Users -->
             <option value="GetCurrentPermissions" class="Users">Get User Permissions</option>
             <option value="GetCurrentUser" class="Users">Get Details About Current User</option>
             <option value="ToggleRole" class="Users">Associate/Dissociate User from Role</option>
+            <option value="ToggleOrganizationUnit" class="Users">Associate/Dissociate User from Organization Unit</option>
             <option value="ImportUsers" class="Users">Import Users and Associate Them with Given Roles</option>
             <option value="ChangePassword" class="Users">Change User's Password</option>
+            <option value="SetActive" class="Users">Activate/Deactivate</option>
         </select>
     </div>
 
