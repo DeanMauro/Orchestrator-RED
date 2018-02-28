@@ -7,18 +7,19 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
 
         this.on('input', function(msg) {
-        	
-        	Orchestrator.refreshToken(this);    // Authenticate session using provided credentials
+        	Orchestrator.refresh(this);    // Authenticate session using provided credentials
+
+            var orch = this.context().flow.get("orch");
 
             // Display connection status
-            if (Orchestrator.token) {
+            if (orch.token) {
             	this.status({fill:"green",shape:"dot",text:"connected"});
             } else {
             	this.status({fill:"red",shape:"ring",text:"unsuccessful"});
             	this.error("Login Unsuccessful");
             }
 
-            this.send({payload: Orchestrator.token});  // Output status
+            this.send({payload: orch.token});  // Output status
         });
     }
     

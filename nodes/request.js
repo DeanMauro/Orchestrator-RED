@@ -15,6 +15,10 @@ module.exports = function(RED) {
                                         else errorOut(node, x);
                                     };
 
+            // Refresh token if needed. Create anew if not found.
+            if (orch) orch.refreshToken(node);
+            else Orchestrator.refresh(node);
+
             // Properties Input
             if (config.category != "UseInput") {
                 try {
@@ -39,7 +43,7 @@ module.exports = function(RED) {
 
                     // Sanitize body
                     body = (body && Object.keys(body).length > 0) ? body : "";
-                    
+
                     // Fire!
                     orch.request({ type: endpoint[0], 
                                    extension: extension,
