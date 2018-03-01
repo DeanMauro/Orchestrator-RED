@@ -42,8 +42,11 @@ module.exports = function(RED) {
                     var extension = Api.fillPath(endpoint[0], endpoint[1], body);
 
                     // Sanitize body
-                    body = (body && Object.keys(body).length > 0) ? body : "";
-
+                    if (body && Object.keys(body).length > 0) {
+                        if (body["Id"]) body["Id"] = parseInt(body["Id"]);
+                    } else 
+                        body = ""
+                    console.log(JSON.stringify(body));
                     // Fire!
                     orch.request({ type: endpoint[0], 
                                    extension: extension,
