@@ -287,7 +287,7 @@
             var params = $("#node-input-param-container").editableList('items');
             params.each(function(i) {
                 var row = {
-                    key: $(this).find(".rowKey").val().toLowerCase(),
+                    key: $(this).find(".rowKey").val(),
                     type: $(this).find(".node-input-params-value").typedInput('type'),
                     value: $(this).find(".node-input-params-value").typedInput('value')
                 };
