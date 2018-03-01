@@ -46,7 +46,7 @@ module.exports = function(RED) {
                         if (body["Id"]) body["Id"] = parseInt(body["Id"]);
                     } else 
                         body = ""
-                    console.log(JSON.stringify(body));
+
                     // Fire!
                     orch.request({ type: endpoint[0], 
                                    extension: extension,
