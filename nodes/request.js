@@ -39,7 +39,7 @@ module.exports = function(RED) {
                     var endpoint = Api[config.category](config.action);
 
                     // Add path & query params if needed
-                    var extension = Api.fillPath(config.action, endpoint[1], body);
+                    var extension = Api.fillPath(endpoint[0], endpoint[1], body);
 
                     // Sanitize body
                     body = (body && Object.keys(body).length > 0) ? body : "";
