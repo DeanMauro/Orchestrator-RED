@@ -22,14 +22,19 @@ module.exports = function(RED) {
             // Properties Input
             if (config.category != "UseInput") {
                 try {
-                    // Convert params provided through msg variable
+                    // Convert fields provided through msg variable
                     if (config.category.startsWith("Msg")) {
                         config.category = msg.payload.category;
                         config.action = msg.payload.action;
-                        body = msg.payload.params;
-                    } else {
-                        body = Api.convertParams(config.params);
                     }
+
+                    // Select Params
+                    if (config.params.length != 0)
+                        body = Api.convertParams(config.params, msg);
+                    else if (msg.payload.params)
+                        body = msg.payload.params;
+                    else
+                        body = {};
 
                     // Check that a category and action were specified
                     if (!config.category) throw "That request was rather vague. Please specify a category in the node's properties."
@@ -42,10 +47,7 @@ module.exports = function(RED) {
                     var extension = Api.fillPath(endpoint[0], endpoint[1], body);
 
                     // Sanitize body
-                    if (body && Object.keys(body).length > 0) {
-                        if (body["Id"]) body["Id"] = parseInt(body["Id"]);
-                    } else 
-                        body = ""
+                    if (body && body["Id"]) body["Id"] = parseInt(body["Id"]);
 
                     // Fire!
                     orch.request({ type: endpoint[0], 
