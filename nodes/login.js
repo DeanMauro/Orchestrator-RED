@@ -9,7 +9,9 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
         	Orchestrator.refresh(this);    // Authenticate session using provided credentials
 
+            // Provide orchestrator object & token-refresh function to flow
             var orch = this.context().flow.get("orch");
+            this.context().flow.set('refreshToken', function() { orch.refreshToken(this); });
 
             // Display connection status
             if (orch.token) {

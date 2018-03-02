@@ -7,7 +7,7 @@ module.exports = function(RED) {
 
         this.on('input', function(msg) {
 
-            var orch = this.context().flow.get("orch");
+            var refreshToken = this.context().flow.get("refreshToken");
             var node = this;
             var body;
             var callback = function(x, status) { 
@@ -15,9 +15,12 @@ module.exports = function(RED) {
                                         else errorOut(node, x);
                                     };
 
-            // Refresh token if needed. Create anew if not found.
-            if (orch) orch.refreshToken(node);
-            else Orchestrator.refresh(node);
+            // Refresh token if needed. Error out if not found.
+            if (refreshToken) refreshToken();
+            else errorOut(node, "Please add a Login node to the flow before making requests.");
+            
+            // Use orch object to make calls
+            var orch = this.context().flow.get("orch");
 
             // Properties Input
             if (config.category != "UseInput") {
