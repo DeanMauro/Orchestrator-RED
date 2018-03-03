@@ -225,7 +225,7 @@
                     var value = $('<input type="text" class="rowVal node-input-params-value" placeholder="Value">').appendTo(row);
                     $(value).typedInput({
                         default: "str",
-                        types: ["str","num","bool","json","re","date","msg","flow","global"]
+                        types: ["str","num","bool","json","date","msg","flow","global"]
                     });
                     if (data.value) {
                         $(value).typedInput('type', data.type);
