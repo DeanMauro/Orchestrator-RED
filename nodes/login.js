@@ -11,7 +11,8 @@ module.exports = function(RED) {
 
             // Provide orchestrator object & token-refresh function to flow
             var orch = this.context().flow.get("orch");
-            this.context().flow.set('refreshToken', function() { orch.refreshToken(this); });
+            var node = this;
+            this.context().flow.set('refreshToken', function() { orch.refreshToken(node); });
 
             // Display connection status
             if (orch.token) {
