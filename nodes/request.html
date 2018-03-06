@@ -63,6 +63,10 @@
 <!-- The fields that appear in a node's Edit box -->
 <script type="text/x-red" data-template-name="request">
     <div class="form-row">
+        <label for="name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="name" placeholder="request" style="width: 220px">
+    </div>
+    <div class="form-row">
         <label for="category"><i class="fa fa-th"></i> Category</label>
         <select id="category">
             <option value="UseInput">Use Input</option>
@@ -201,7 +205,8 @@
         color: '#FF851B',
         defaults: {
             name: {value: ""},
-            category: {value:"Use Input"},
+            nameSet: {value: false},
+            category: {value:"UseInput"},
             action: {value: ""},
             params: {value: [{key: "", type: "str", value: ""}]}
         },
@@ -239,6 +244,7 @@
 
 
             // Fill in persisted values
+            if (this.nameSet) $('#name').val(this.name);
             $('#category').val(this.category || "UseInput");
             $('#action').val(this.action || "");
             try {
@@ -278,8 +284,15 @@
             node.action = $("#action").val();       // Save Action
 
             // Save Name
-            var name = (/UseInput|Msg/.test(node.category)) ? "request" : 
-                                                              (node.category + ": " + $("#action :selected").text());
+            node.nameSet = false;
+            if ($('#name').val()) {
+                var name = $('#name').val();
+                node.nameSet = true;
+            } else if (/UseInput|Msg/.test(node.category))
+                var name = "request";
+            else
+                var name = node.category + ": " + $("#action :selected").text();
+            
             node.name = (name.length <= 20) ? name : (name.substring(0,18) + "...");
             
             // Save Parameters
