@@ -1,6 +1,7 @@
 #!/bin/bash
-
-npm rm --global orchestrator
+if [ -f /usr/lib/node_modules/orchestrator ]; then
+	npm rm --global orchestrator
+fi
 
 npm init
 
@@ -10,4 +11,5 @@ cd ~/.node-red
 npm link orchestrator
 cd -
 
-echo "You're good to go. Run ./run.sh to start up Orchestrator-RED."
+echo "..."
+echo "\033[92mYou're good to go. Run ./run.sh to start up Orchestrator-RED.\033[0m"

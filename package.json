@@ -4,7 +4,8 @@
   "description": "A wrapper for the UiPath Orchestrator",
   "main": "index.js",
   "dependencies": {
-    "xmlhttprequest" : "1.8.x"
+    "alexa-sdk": "^1.0.25",
+    "xmlhttprequest": "1.8.x"
   },
   "devDependencies": {},
   "scripts": {
@@ -16,10 +17,10 @@
   ],
   "author": "Dean Mauro",
   "license": "ISC",
-  "node-red" : {
-        "nodes": {
-            "login": "nodes/login.js",
-            "request": "nodes/request.js"
-        }
+  "node-red": {
+    "nodes": {
+      "login": "nodes/login.js",
+      "request": "nodes/request.js"
     }
+  }
 }
