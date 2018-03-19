@@ -12,4 +12,4 @@ npm link orchestrator
 cd -
 
 echo "..."
-echo "\033[92mYou're good to go. Run ./run.sh to start up Orchestrator-RED.\033[0m"
+echo -e "\033[0;92mYou're good to go. Run ./run.sh to start up Orchestrator-RED.\033[0m"
