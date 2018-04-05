@@ -21,5 +21,8 @@
       "login": "nodes/login.js",
       "request": "nodes/request.js"
     }
+  },
+  "directories": {
+    "lib": "lib"
   }
 }

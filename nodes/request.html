@@ -213,7 +213,10 @@
         icon: "uipathLogo.png",
         inputs: 1,
         outputs: 1,
-        label: function() { return this.name || "request"; },
+        label: function() { 
+                var label = this.name || "request";
+                return (label.length <= 20) ? label : (label.substring(0,18) + "...");
+            },
         oneditprepare: function() {
 
             // Create structure for params list
