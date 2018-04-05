@@ -51,7 +51,8 @@ module.exports = function(RED) {
 
                     // Sanitize body
                     if (body && body["Id"]) body["Id"] = parseInt(body["Id"]);
-
+                    console.log(body);
+                    console.log(JSON.stringify(body));
                     // Fire!
                     orch.request({ type: endpoint[0], 
                                    extension: extension,
@@ -67,7 +68,7 @@ module.exports = function(RED) {
                 
                 orch.request({ type: msg.payload.action, 
                                extension: msg.payload.extension,
-                               body: msg.payload.body || "",
+                               body: JSON.stringify(msg.payload.body) || "",
                                callback: callback });
             } 
 
