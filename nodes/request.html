@@ -296,7 +296,7 @@
             else
                 var name = node.category + ": " + $("#action :selected").text();
             
-            node.name = (name.length <= 20) ? name : (name.substring(0,18) + "...");
+            node.name = name;
             
             // Save Parameters
             node.params = [];
