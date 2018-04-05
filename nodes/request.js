@@ -51,8 +51,7 @@ module.exports = function(RED) {
 
                     // Sanitize body
                     if (body && body["Id"]) body["Id"] = parseInt(body["Id"]);
-                    console.log(body);
-                    console.log(JSON.stringify(body));
+
                     // Fire!
                     orch.request({ type: endpoint[0], 
                                    extension: extension,
