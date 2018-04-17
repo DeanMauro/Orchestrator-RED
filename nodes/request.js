@@ -11,7 +11,7 @@ module.exports = function(RED) {
             var node = this;
             var body;
             var callback = function(x, status) { 
-                                        if (status < 300) node.send(x);
+                                        if (status < 300) node.send({payload: x});
                                         else errorOut(node, x);
                                     };
 
