@@ -1,4 +1,4 @@
-require('../lib/orchestrator.js');
+const Orchestrator = require('../lib/orchestrator.js');
 
 module.exports = function(RED) {
 

@@ -1,5 +1,5 @@
 require('../lib/orchestrator.js');
-require('../lib/api.js');
+const Api = require('../lib/api.js');
 
 module.exports = function(RED) {
     function RequestNode(config) {
