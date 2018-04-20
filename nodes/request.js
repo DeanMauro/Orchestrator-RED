@@ -33,7 +33,7 @@ module.exports = function(RED) {
 
                     // Select Params
                     if (config.params.length != 0)
-                        body = Api.convertParams(config.params, msg);
+                        body = convertParams(config.params, msg, node);
                     else if (msg.payload.params)
                         body = msg.payload.params;
                     else
@@ -78,6 +78,42 @@ module.exports = function(RED) {
         });
     }
 
+
+    function convertParams(params, msg, node) {
+        var body = {};
+        
+        for (var p of params) {
+            var val = p.value;
+
+            switch(p.type) {
+                case 'msg':
+                    val = RED.util.getMessageProperty(msg, "msg." + p.value); break;
+                case 'json':
+                    val = JSON.parse(p.value); break;
+                case 'flow':
+                    val = node.context().flow.get(p.value); break;
+                case 'global':
+                    val = node.context().global.get(p.value); break;
+                case 'date':
+                    val = Date.now(); break;
+                case 'jsonata':
+                    try{
+                        var prep = RED.util.prepareJSONataExpression(p.value, msg);
+                        val = RED.util.evaluateJSONataExpression(prep, msg);
+                    } catch(err) {
+                        errorOut(node, "Invalid JSONata expression");
+                        return;
+                    }
+                    break;
+            }
+
+            body[p.key] = val;
+        }
+
+        return body;
+    }
+
+    
     function errorOut(node, error) {
         node.error(error);
         node.send({ result: null,
