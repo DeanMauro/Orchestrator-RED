@@ -1,5 +1,5 @@
 {
-  "name": "orchestrator",
+  "name": "node-red-contrib-uipath-orchestrator",
   "version": "1.0.0",
   "description": "A wrapper for the UiPath Orchestrator",
   "main": "index.js",
