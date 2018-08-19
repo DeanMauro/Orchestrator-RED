@@ -1,0 +1,127 @@
+
+<!-- DESCRIPTION -->
+<!-- This is the text that appears in the info tab -->
+<script type="text/x-red" data-help-name="startJob">
+    <p>Start a job in UiPath's Orchestrator.</p>
+</script>
+
+<script src="//rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
+<link href="//rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css" rel="stylesheet">
+<!-- PROPERTIES -->
+<!-- The fields that appear in a node's Edit box -->
+<script type="text/x-red" data-template-name="startJob">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="start job">
+    </div>
+    <!-- CHANGE this to input select -->
+    <div class="form-row">
+        <label for="node-input-process"><i class="fa fa-th"></i> Process</label>
+        <select id="node-input-process"></select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-robot"><i class="fa fa-th"></i> Robot(s)</label>
+        <select id="node-input-robot"></select>
+    </div>
+    <div class="form-row node-input-rule-container-row">
+        <label for="node-input-param-container" style="width: auto">Input Parameters</label>
+        <ol id="node-input-param-container"></ol>
+    </div>
+    <!-- <div class="form-row">
+        <label for="node-input-policy" style="width: auto">Proceed When Job </label>
+        <select id="node-input-policy" style="width: auto">
+            <option value=1>Starts</option>
+            <option value=2>Completes</option>
+        </select>
+    </div> -->
+</script>
+
+
+<!-- JAVASCRIPT -->
+<!-- Controls the setup and persistence of a node -->
+<script type="text/javascript">
+
+    RED.nodes.registerType('startJob',{
+        category: 'orchestrator',
+        color: '#00CA00',
+        defaults: {
+            name: {value: ""},
+            process: {value: ""},
+            robot: {value: ""},
+            policy: {value: 1},
+            params: {value: [{key: "", type: "str", value: ""}]}
+        },
+        icon: "uipathLogo.png",
+        inputs: 1,
+        outputs: 1,
+        label: function() { 
+                var label = this.name || "start job";
+                return (label.length <= 20) ? label : (label.substring(0,18) + "...");
+            },
+        oneditprepare: function() {
+
+            // Make Process and Robot dropdowns editable comboboxes
+            $('#node-input-process').editableSelect();
+            $('#node-input-robot').editableSelect();
+
+            // Create structure for params list
+            $('#node-input-param-container').editableList({
+                addItem: function(row,i,data) {
+                    
+                    // Ensure no overflow within row
+                    row.css( { overflow: 'hidden', whiteSpace: 'nowrap' } );
+
+                    // Add new key-value pair
+                    var key = $('<input type="text" class="rowKey" placeholder="Key">').appendTo(row);
+                    if (data.key) $(key).val(data.key);
+
+                    var value = $('<input type="text" class="rowVal node-input-params-value" placeholder="Value">').appendTo(row);
+                    $(value).typedInput({
+                        default: "str",
+                        types: ["str","num","bool","json","date","msg","flow","global",'jsonata']
+                    });
+                    if (data.value) {
+                        $(value).typedInput('type', data.type);
+                        $(value).typedInput('value', data.value);
+                    }
+                    
+                },
+                removable: true,
+                sortable: true
+            });
+
+
+            // Fill in persisted values
+            try {
+                for (var row of this.params)
+                    $("#node-input-param-container").editableList('addItem', row);
+            } catch(TypeError) {}
+        },
+        oneditsave: function() {
+            var node = this;
+            
+            // Save Parameters
+            node.params = [];
+            var params = $("#node-input-param-container").editableList('items');
+            params.each(function(i) {
+                var row = {
+                    key: $(this).find(".rowKey").val(),
+                    type: $(this).find(".node-input-params-value").typedInput('type'),
+                    value: $(this).find(".node-input-params-value").typedInput('value')
+                };
+                
+                node.params.push(row);
+            });
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-input-rule-container-row)");
+            var height = size.height;
+            for (var i=0; i<rows.size(); i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-input-rule-container-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $("#node-input-param-container").editableList('height',height);
+        }
+    });
+</script>
