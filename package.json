@@ -4,7 +4,8 @@
   "description": "A wrapper for the UiPath Orchestrator",
   "main": "index.js",
   "dependencies": {
-    "xmlhttprequest": "1.8.x"
+    "xmlhttprequest": "1.8.x",
+    "jquery-editable-select": "latest"
   },
   "devDependencies": {},
   "scripts": {
@@ -19,7 +20,8 @@
   "node-red": {
     "nodes": {
       "login": "nodes/login.js",
-      "request": "nodes/request.js"
+      "request": "nodes/request.js",
+      "start job": "nodes/startJob.js"
     }
   },
   "directories": {
