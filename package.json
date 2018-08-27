@@ -19,7 +19,7 @@
   "license": "ISC",
   "node-red": {
     "nodes": {
-      "login": "nodes/login.js",
+      "connection": "nodes/connection.js",
       "request": "nodes/request.js",
       "start job": "nodes/startJob.js"
     }

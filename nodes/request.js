@@ -7,20 +7,18 @@ module.exports = function(RED) {
 
         this.on('input', function(msg) {
 
-            var refreshToken = this.context().flow.get("refreshToken");
             var node = this;
+            var connection = RED.nodes.getNode(config.connection);
             var body;
             var callback = function(x, status) { 
                                         if (status < 300) node.send({payload: x});
-                                        else errorOut(node, x);
+                                        else node.error(x);
                                     };
 
             // Refresh token if needed. Error out if not found.
-            if (refreshToken) refreshToken();
-            else errorOut(node, "Please add a Login node to the flow before making requests.");
+            if (!connection)
+                throw "Please add Login credentials before making requests.";
             
-            // Use orch object to make calls
-            var orch = this.context().flow.get("orch");
 
             // Properties Input
             if (config.category != "UseInput") {
@@ -53,27 +51,27 @@ module.exports = function(RED) {
                     if (body && body["Id"]) body["Id"] = parseInt(body["Id"]);
 
                     // Fire!
-                    orch.request({ type: endpoint[0], 
-                                   extension: extension,
-                                   body: JSON.stringify(body),
-                                   callback: callback });
+                    connection.request({ type: endpoint[0], 
+                                         extension: extension,
+                                         body: JSON.stringify(body),
+                                         callback: callback });
                 } catch(e) {
-                    errorOut(node, e);
+                    this.error(e);
                 }
             }
 
             // JSON Input
             else if (msg.payload.action && msg.payload.extension) {
                 
-                orch.request({ type: msg.payload.action, 
-                               extension: msg.payload.extension,
-                               body: JSON.stringify(msg.payload.body) || "",
-                               callback: callback });
+                connection.request({ type: msg.payload.action, 
+                                     extension: msg.payload.extension,
+                                     body: JSON.stringify(msg.payload.body) || "",
+                                     callback: callback });
             } 
 
             // Bad Input
             else {
-                errorOut(this, "Bad input. Please refer to the info tab for formatting.");
+                this.error("Bad input. Please refer to the info tab for formatting.");
             }
         });
     }
@@ -97,12 +95,11 @@ module.exports = function(RED) {
                 case 'date':
                     val = Date.now(); break;
                 case 'jsonata':
-                    try{
+                    try {
                         var prep = RED.util.prepareJSONataExpression(p.value, msg);
                         val = RED.util.evaluateJSONataExpression(prep, msg);
                     } catch(err) {
-                        errorOut(node, "Invalid JSONata expression");
-                        return;
+                        throw "Invalid JSONata expression";
                     }
                     break;
             }
@@ -114,13 +111,7 @@ module.exports = function(RED) {
     }
 
     
-    function errorOut(node, error) {
-        node.error(error);
-        node.send({ result: null,
-                    success: false,
-                    error: { message: "Error. Can't proceed." }
-                 });
-    }
+    
     
     RED.nodes.registerType("request", RequestNode);
 }

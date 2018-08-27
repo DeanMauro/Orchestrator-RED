@@ -67,6 +67,10 @@
         <input type="text" id="name" placeholder="request" style="width: 220px">
     </div>
     <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-object-group"></i> Login</label>
+        <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
+    </div>
+    <div class="form-row">
         <label for="category"><i class="fa fa-th"></i> Category</label>
         <select id="category">
             <option value="UseInput">Use Input</option>
@@ -206,6 +210,7 @@
         defaults: {
             name: {value: ""},
             nameSet: {value: false},
+            connection: {type:"connection", required: true},
             category: {value:"UseInput"},
             action: {value: ""},
             params: {value: [{key: "", type: "str", value: ""}]}
