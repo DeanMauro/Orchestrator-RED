@@ -19,9 +19,9 @@
   "license": "ISC",
   "node-red": {
     "nodes": {
-      "connection": "nodes/connection.js",
-      "request": "nodes/request.js",
-      "start job": "nodes/startJob.js"
+      "orchestrator connection": "nodes/connection.js",
+      "orchestrator request": "nodes/request.js",
+      "orchestrator start job": "nodes/startJob.js"
     }
   },
   "directories": {

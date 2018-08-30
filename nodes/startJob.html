@@ -1,18 +1,21 @@
 
 <!-- DESCRIPTION -->
 <!-- This is the text that appears in the info tab -->
-<script type="text/x-red" data-help-name="startJob">
+<script type="text/x-red" data-help-name="orchestrator start job">
     <p>Start a job in UiPath's Orchestrator.</p>
 </script>
 
-<script src="//rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
-<link href="//rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css" rel="stylesheet">
+
 <!-- PROPERTIES -->
 <!-- The fields that appear in a node's Edit box -->
-<script type="text/x-red" data-template-name="startJob">
+<script type="text/x-red" data-template-name="orchestrator start job">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="start job">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-object-group"></i> Login</label>
+        <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
     </div>
     <!-- CHANGE this to input select -->
     <div class="form-row">
@@ -41,11 +44,12 @@
 <!-- Controls the setup and persistence of a node -->
 <script type="text/javascript">
 
-    RED.nodes.registerType('startJob',{
+    RED.nodes.registerType('orchestrator start job',{
         category: 'orchestrator',
         color: '#00CA00',
         defaults: {
             name: {value: ""},
+            connection: {type:"orchestrator connection", required: true},
             process: {value: ""},
             robot: {value: ""},
             policy: {value: 1},
@@ -54,6 +58,7 @@
         icon: "uipathLogo.png",
         inputs: 1,
         outputs: 1,
+        paletteLabel: 'start job',
         label: function() { 
                 var label = this.name || "start job";
                 return (label.length <= 20) ? label : (label.substring(0,18) + "...");
@@ -61,8 +66,8 @@
         oneditprepare: function() {
 
             // Make Process and Robot dropdowns editable comboboxes
-            $('#node-input-process').editableSelect();
-            $('#node-input-robot').editableSelect();
+            // $('#node-input-process').editableSelect();
+            // $('#node-input-robot').editableSelect();
 
             // Create structure for params list
             $('#node-input-param-container').editableList({

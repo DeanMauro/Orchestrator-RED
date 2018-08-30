@@ -1,8 +1,7 @@
-require('../lib/orchestrator.js');
 const Api = require('../lib/api.js');
 
 module.exports = function(RED) {
-    function StartJobNode(config) {
+    function OrchestratorStartJobNode(config) {
         RED.nodes.createNode(this,config);
 
         this.on('input', function(msg) {
@@ -90,5 +89,5 @@ module.exports = function(RED) {
                  });
     }
     
-    RED.nodes.registerType("startJob", StartJobNode);
+    RED.nodes.registerType("orchestrator start job", OrchestratorStartJobNode);
 }
