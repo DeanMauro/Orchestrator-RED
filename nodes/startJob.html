@@ -14,17 +14,18 @@
         <input type="text" id="node-input-name" placeholder="start job">
     </div>
     <div class="form-row">
-        <label for="node-input-connection"><i class="fa fa-object-group"></i> Login</label>
+        <label for="node-input-connection"><i class="fa fa-sign-in"></i> Login</label>
         <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
     </div>
+    <hr>
     <!-- CHANGE this to input select -->
     <div class="form-row">
-        <label for="node-input-process"><i class="fa fa-th"></i> Process</label>
-        <select id="node-input-process"></select>
+        <label for="node-input-process"><i class="fa fa-sitemap"></i> Process</label>
+        <input id="node-input-process"></input>
     </div>
     <div class="form-row">
-        <label for="node-input-robot"><i class="fa fa-th"></i> Robot(s)</label>
-        <select id="node-input-robot"></select>
+        <label for="node-input-robot"><i class="fa fa-user"></i> Robot(s)</label>
+        <input id="node-input-robot"></input>
     </div>
     <div class="form-row node-input-rule-container-row">
         <label for="node-input-param-container" style="width: auto">Input Parameters</label>
@@ -65,9 +66,15 @@
             },
         oneditprepare: function() {
 
-            // Make Process and Robot dropdowns editable comboboxes
-            // $('#node-input-process').editableSelect();
-            // $('#node-input-robot').editableSelect();
+            $('#node-input-process').typedInput({
+                default: 'str',
+                types: ['str', 'msg', 'flow', 'global', 'jsonata']
+            });
+
+            $('#node-input-robot').typedInput({
+                default: 'str',
+                types: ['str', 'msg', 'flow', 'global', 'jsonata']
+            });
 
             // Create structure for params list
             $('#node-input-param-container').editableList({

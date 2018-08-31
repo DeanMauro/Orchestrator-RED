@@ -6,49 +6,24 @@
 
     <h3>Details</h3>
     <dl class="message-properties">
-        <p>You can instruct this node to contact Orchestrator in one of two ways: </p>
-        <ul>
-          <li>by filling in the node's properties OR</li>
-          <li>by inputting a JSON structure with the appropriate fields for an API call.</li>
-        </ul> 
-        <p><i>Note that, if the properties are filled in, inputs will be ignored.</i></p>
+        <p>You can instruct this node to contact Orchestrator by filling in its properties as per the Orchestrator API guidelines.</p>
         <p>See the <a href="https://orchestrator.uipath.com/v2018.1/reference">Orchestrator API Guide</a> for a list of available calls.</p>
     </dl>
 
     <br>
 
 
-    <h3>Option 1: Properties</h3>
+    <h3>Inputs</h3>
     <dl class="message-properties">
         <h6>Open the node and fill in the following properties:</h6>
         <dt>Category<span class="property-type">String</span></dt>
-        <dd>The Orchestrator element you wish to interact with. If <code>Use Input</code> is selected, the node will default to Option 2 and expect a JSON input. Otherwise, it will use the selected values.</dd>
+        <dd>The Orchestrator element you wish to interact with <i>(e.g. Robot, Job, Process)</i>.</dd>
         <dt>Action<span class="property-type">String</span></dt>
         <dd>The action to take in the above category.</dd>
         <dt>Parameters<span class="property-type">List</span></dt>
         <dd>Certain actions require more information. Use the add button to prepare all required parameters.</dd>
     </dl>
 
-    <br>
-
-    <h3>Option 2: Input</h3>
-        <dl class="message-properties">
-            <h6>Send to the input port a JSON structure with the following keys:</h6>
-            <dt>action<span class="property-type">String</span></dt>
-            <dt>extension<span class="property-type">String</span></dt>
-            <dt>body<span class="property-type">JSON</span></dt>
-            <h6>Example</h6>
-            <pre>
-{
- "action": "POST",
- "extension": "odata/Assets",
- "body": {
-           "Name": "Poe",
-           "Description": "Lo'"
-         }
-}
-            </pre>
-        </dl>
 
     <br>
 
@@ -67,14 +42,13 @@
         <input type="text" id="name" placeholder="request">
     </div>
     <div class="form-row">
-        <label for="node-input-connection"><i class="fa fa-object-group"></i> Login</label>
+        <label for="node-input-connection"><i class="fa fa-sign-in"></i> Login</label>
         <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
     </div>
+    <hr>
     <div class="form-row">
         <label for="category"><i class="fa fa-th"></i> Category</label>
         <select id="category">
-            <option value="UseInput">Use Input</option>
-            <option value="MsgPayload">Msg.payload.category</option>
             <option value="Alerts">Alerts</option>
             <option value="Assets">Assets</option>
             <option value="AuditLogs">Audit Logs</option>
@@ -101,11 +75,10 @@
         </select>
     </div>
 
-    <div class="form-row useCategory animated">
+    <div class="form-row">
         <label for="action"><i class="fa fa-bolt"></i> Action</label>
         <select id="action">
             <!-- General -->
-            <option value="MsgPayload" class="MsgPayload">Msg.payload.action</option>
             <option value="GetAll" class="Alerts Assets AuditLogs Environments Jobs OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
             <option value="GetOne" class="Environments Jobs OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases Robots Tenants Users">Get One</option>
             <option value="Create" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Robots Roles Tenants Users">Create</option>
@@ -193,7 +166,7 @@
         </select>
     </div>
 
-    <div class="form-row node-input-rule-container-row useCategory animated">
+    <div class="form-row node-input-rule-container-row">
         <label for="node-input-param-container">Parameters</label>
         <ol id="node-input-param-container"></ol>
     </div>
@@ -211,7 +184,7 @@
             name: {value: ""},
             nameSet: {value: false},
             connection: {type:"orchestrator connection", required: true},
-            category: {value:"UseInput"},
+            category: {value:""},
             action: {value: ""},
             params: {value: [{key: "", type: "str", value: ""}]}
         },
@@ -254,36 +227,28 @@
 
             // Fill in persisted values
             if (this.nameSet) $('#name').val(this.name);
-            $('#category').val(this.category || "UseInput");
-            $('#action').val(this.action || "");
+            $('#category').val(this.category || "Alerts");
+            $('#action').val(this.action || "GetAll");
             try {
                 for (var row of this.params)
                     $("#node-input-param-container").editableList('addItem', row);
             } catch(TypeError) {}
 
-            // Fill in appropriate actions and set field visibility...
-            function checkCategory(a, b) {
-                if ($('#category').val() == 'UseInput') {
-                    a();
-                } else {
-                    var category = $('#category').val();
-                    $('#action option:not(.'+category+')').hide();
-                    $('#action option.'+category).show();
-
-                    if ($(".useCategory").css('opacity') < 1) b();
-                }
+            // Fill in appropriate actions...
+            function checkCategory() {
+                var category = $('#category').val();
+                $('#action option:not(.'+category+')').hide();
+                $('#action option.'+category).show();
+                $('#action option.'+category).show();
             }
 
             // ...when opening node
-            checkCategory(()=>{ $(".useCategory").css('opacity', 0); },
-                          ()=>{ $(".useCategory").css('opacity', 1); });
+            checkCategory();
 
             // ...or when the category changes
             $("#category").off().on('change', function() {
                 $("#action").val('');   // Clear selected action
-
-                checkCategory(()=>{ $(".useCategory").removeClass('flipInY').addClass('flipOutY'); },
-                              ()=>{ $(".useCategory").removeClass('flipOutY').addClass('flipInY'); });
+                checkCategory();
             });
 
         },
@@ -293,16 +258,8 @@
             node.action = $("#action").val();       // Save Action
 
             // Save Name
-            node.nameSet = false;
-            if ($('#name').val()) {
-                var name = $('#name').val();
-                node.nameSet = true;
-            } else if (/UseInput|Msg/.test(node.category))
-                var name = "request";
-            else
-                var name = node.category + ": " + $("#action :selected").text();
-            
-            node.name = name;
+            node.name = $('#name').val() || node.category + ": " + $("#action :selected").text();
+            node.nameSet = !!$('#name').val();
             
             // Save Parameters
             node.params = [];
@@ -337,58 +294,5 @@
     .rowKey, .red-ui-typedInput-container {
         width: 48% !important;
         margin-right: 2%; 
-    }
-
-    .useCategory {
-        opacity: 0;
-    }
-
-    .animated {
-      animation-duration: 0.75s;
-      animation-fill-mode: both;
-    }
-
-    .flipInY {
-      backface-visibility: visible !important;
-      animation-name: flipInY;
-    }
-
-    .flipOutY {
-      backface-visibility: visible !important;
-      animation-name: flipOutY;
-    }
-
-    @keyframes flipInY {
-      from {
-        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-        animation-timing-function: ease-in;
-        opacity: 0;
-      }
-
-      50% {
-        transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
-        opacity: 1;
-      }
-
-      to {
-        transform: perspective(400px);
-        opacity: 1;
-      }
-    }
-
-    @keyframes flipOutY {
-      from {
-        transform: perspective(400px);
-      }
-
-      30% {
-        transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
-        opacity: 1;
-      }
-
-      to {
-        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-        opacity: 0;
-      }
     }
 </style>
