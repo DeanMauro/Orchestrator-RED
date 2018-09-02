@@ -1,0 +1,90 @@
+oneditprepare: function() {
+
+    ...
+
+    // Fill in appropriate actions and set field visibility...
+    function checkCategory(a, b) {
+        if ($('#category').val() == 'UseInput') {
+            a();
+        } else {
+            var category = $('#category').val();
+            $('#action option:not(.'+category+')').hide();
+            $('#action option.'+category).show();
+
+            if ($(".useCategory").css('opacity') < 1) b();
+        }
+    }
+
+    // ...when opening node
+    checkCategory(()=>{ $(".useCategory").css('opacity', 0); },
+                  ()=>{ $(".useCategory").css('opacity', 1); });
+
+    // ...or when the category changes
+    $("#category").off().on('change', function() {
+        $("#action").val('');   // Clear selected action
+
+        checkCategory(()=>{ $(".useCategory").removeClass('flipInY').addClass('flipOutY'); },
+                      ()=>{ $(".useCategory").removeClass('flipOutY').addClass('flipInY'); });
+    });
+
+}
+
+------------------------------------------------------------------------------------------------------
+
+<!-- CSS -->
+<!-- Style, baby -->
+<style>
+    
+    .useCategory {
+        opacity: 0;
+    }
+
+    .animated {
+      animation-duration: 0.75s;
+      animation-fill-mode: both;
+    }
+
+    .flipInY {
+      backface-visibility: visible !important;
+      animation-name: flipInY;
+    }
+
+    .flipOutY {
+      backface-visibility: visible !important;
+      animation-name: flipOutY;
+    }
+
+    @keyframes flipInY {
+      from {
+        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+        animation-timing-function: ease-in;
+        opacity: 0;
+      }
+
+      50% {
+        transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+        opacity: 1;
+      }
+
+      to {
+        transform: perspective(400px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes flipOutY {
+      from {
+        transform: perspective(400px);
+      }
+
+      30% {
+        transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+        opacity: 1;
+      }
+
+      to {
+        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+        opacity: 0;
+      }
+    }
+</style>
