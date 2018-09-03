@@ -1,4 +1,4 @@
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const axios = require('axios');
 
 module.exports = function(RED) {
     "use strict"
@@ -11,56 +11,43 @@ module.exports = function(RED) {
         /*DECLARATIONS*/
         //////////////////////////////
 
-        this.url = (config.url || 'https://platform.uipath.com').replace(/\/$/, "");
         this.tenant = config.tenant || 'default';
         this.user = config.user;
         this.token = null;
         this.start = null;
+        this.spec = {
+                        withCredentials: true,
+                        baseURL: (config.url || 'https://platform.uipath.com').replace(/\/$/, ""),
+                        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (this.token || '')}
+                    }
 
 
-        this.getToken = function() {
-            // Add credentials to request body
-            let body = JSON.stringify({tenancyName: this.tenant, usernameOrEmailAddress: this.user, password: this.credentials.password});
+        this.getToken = async function() {
+            let body = { method: 'post', 
+                         url: '/api/account/authenticate',
+                         data: { tenancyName: this.tenant, 
+                                 usernameOrEmailAddress: this.user, 
+                                 password: this.credentials.password }
+            };
             
-            // Compose request
-            var xhttp = new XMLHttpRequest();
-            xhttp.withCredentials = true;
-            xhttp.open('POST', this.url + '/api/account/authenticate', false);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
-            xhttp.send(body);
-
-            // Authentication is synchronous. Return token
             try {
-              let arr = JSON.parse(xhttp.responseText);
-              this.token = arr["result"];
-              console.log("Refreshed Token");
-            } catch (e) {
-              throw new Error("Could not connect to Orchestrator. Please check your credentials.");
+                var res = await axios({...body, ...this.spec});
+                this.token = res['data']['result'];
+                this.spec['headers'] = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token};
+
+                console.log("Refreshed Token");
+            } catch(e) {
+                throw new Error("Could not connect to Orchestrator. Please check your credentials.");
             }
         }
 
 
-        this.request = function(p) {
+        this.request = async function(p) {
             // Refresh token if needed
             if (!this.start || (Date.now() - this.start) >= 1500000)
                 this.getToken();
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.withCredentials = true;
-
-            // Use a callback to get the response
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == this.DONE) {
-                    let result = JSON.parse(this.responseText || "{\"status\":"+this.status+"}");
-                    p["callback"](result, this.status);
-                }
-            };
-
-            // Compose request
-            xhttp.open(p["type"].toUpperCase(), this.url + '/' + p["extension"], true);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
-            xhttp.setRequestHeader('Authorization', 'Bearer ' + (this.token || ''));
-            xhttp.send(p["body"]);
+            return axios({...p, ...this.spec});
         }
 
         //////////////////////////////

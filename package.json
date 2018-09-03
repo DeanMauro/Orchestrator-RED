@@ -4,7 +4,7 @@
   "description": "A wrapper for the UiPath Orchestrator",
   "main": "index.js",
   "dependencies": {
-    "xmlhttprequest": "1.8.x",
+    "axios": "latest",
     "jquery-editable-select": "latest"
   },
   "devDependencies": {},

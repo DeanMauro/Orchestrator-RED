@@ -9,11 +9,7 @@ module.exports = function(RED) {
 
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
-            var body = {};
-            var callback = function(x, status) { 
-                                        if (status < 300) node.send({payload: x});
-                                        else node.error(x);
-                                    };
+            var data = {};
 
             // Ensure node has connection
             Utilities.checkConnection(connection);
@@ -28,9 +24,9 @@ module.exports = function(RED) {
 
                 // Select Params
                 if (config.params.length != 0)
-                    body = Utilities.convertParams(config.params, msg, node);
+                    data = Utilities.convertParams(config.params, msg, node);
                 else if (msg.payload.params)
-                    body = msg.payload.params;
+                    data = msg.payload.params;
 
                 // Check that a category and action were specified
                 if (!config.category) throw "That request was rather vague. Please specify a category in the node's properties."
@@ -40,16 +36,21 @@ module.exports = function(RED) {
                 var endpoint = Api[config.category](config.action);
 
                 // Add path & query params if needed
-                var extension = Api.fillPath(endpoint[0], endpoint[1], body);
+                var extension = Api.fillPath(endpoint[0], endpoint[1], data);
 
-                // Sanitize body
-                if (body && body["Id"]) body["Id"] = parseInt(body["Id"]);
+                // Sanitize data
+                if (data && data["Id"]) data["Id"] = parseInt(data["Id"]);
 
                 // Fire!
-                connection.request({ type: endpoint[0], 
-                                     extension: extension,
-                                     body: JSON.stringify(body),
-                                     callback: callback });
+                connection.request({ method: endpoint[0], 
+                                     url: extension,
+                                     data: data })
+                            .then(r => {
+                                node.send({payload: r.data});
+                            })
+                            .catch(e => {
+                                node.error(e.response || e.message);
+                            });
             } catch(e) {
                 this.error(e);
             }

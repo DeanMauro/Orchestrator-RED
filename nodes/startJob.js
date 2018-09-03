@@ -28,10 +28,9 @@ module.exports = function(RED) {
                 var endpoint = Api["Jobs"]("StartJobs");
 
                 // Fire!
-                connection.request({ type: endpoint[0], 
-                                     extension: extension,
-                                     body: JSON.stringify(body),
-                                     callback: callback });
+                connection.request({ method: endpoint[0], 
+                                     url: extension,
+                                     data: body });
             } catch(e) {
                 errorOut(node, e);
             }
