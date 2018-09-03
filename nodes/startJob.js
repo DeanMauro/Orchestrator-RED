@@ -9,28 +9,35 @@ module.exports = function(RED) {
 
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
-            var body = {};
-            var callback = function(x, status) { 
-                                        if (status < 300) node.send({payload: x});
-                                        else node.error(x);
-                                    };
+            var data = {};
 
             // Ensure node has connection
             Utilities.checkConnection(connection);
 
-            // Properties Input
             try {
                 // Select Params
                 if (config.params.length != 0)
-                    body = Utilities.convertParams(config.params, msg, node);
+                    data = Utilities.convertParams(config.params, msg, node);
 
                 // Get endpoint info
                 var endpoint = Api["Jobs"]("StartJobs");
 
+                // Add path & query params if needed
+                var extension = Api.fillPath(endpoint[0], endpoint[1], data);
+
+                // Sanitize data
+                if (data && data["Id"]) data["Id"] = parseInt(data["Id"]);
+
                 // Fire!
                 connection.request({ method: endpoint[0], 
                                      url: extension,
-                                     data: body });
+                                     data: data })
+                            .then(r => {
+                                node.send({payload: r.data});
+                            })
+                            .catch(e => {
+                                node.error(e.response || e.message);
+                            });
             } catch(e) {
                 errorOut(node, e);
             }
