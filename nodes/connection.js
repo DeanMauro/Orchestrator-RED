@@ -51,12 +51,8 @@ module.exports = function(RED) {
         }
 
 
-        this.requests = function(a, b) {
-
-            return axios.all([this.request(a), this.request(b)])
-                        .then(axios.spread(function (aa, pbb) {
-                        // Both requests are now complete
-                        }));
+        this.requests = function(...calls) {
+            return axios.all(calls.map(c => this.request(c)));
         }
 
         //////////////////////////////
