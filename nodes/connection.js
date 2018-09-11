@@ -37,7 +37,7 @@ module.exports = function(RED) {
 
                 console.log("Refreshed Token");
             } catch(e) {
-                throw new Error("Could not connect to Orchestrator. Please check your credentials.");
+                return Promise.reject(new Error("Could not connect to Orchestrator. Please check your credentials."));
             }
         }
 
@@ -48,6 +48,15 @@ module.exports = function(RED) {
                 this.getToken();
 
             return axios({...p, ...this.spec});
+        }
+
+
+        this.requests = function(a, b) {
+
+            return axios.all([this.request(a), this.request(b)])
+                        .then(axios.spread(function (aa, pbb) {
+                        // Both requests are now complete
+                        }));
         }
 
         //////////////////////////////
