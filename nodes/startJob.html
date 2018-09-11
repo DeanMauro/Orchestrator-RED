@@ -18,26 +18,47 @@
         <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
     </div>
     <hr>
-    <!-- CHANGE this to input select -->
+
     <div class="form-row">
-        <label for="node-input-process"><i class="fa fa-sitemap"></i> Process</label>
-        <input id="node-input-process"></input>
+        <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-start-job-tabs"></ul>
     </div>
-    <div class="form-row">
-        <label for="node-input-robot"><i class="fa fa-user"></i> Robot(s)</label>
-        <input id="node-input-robot"></input>
+    <div id="node-start-job-tabs-content" style="min-height: 170px;">
+
+        <div id="start-job-tab-process" style="display:none">
+            <div class="form-row">
+                <label for="node-input-process">Name</label>
+                <input id="node-input-process"></input>
+            </div>
+            <div class="form-row node-input-rule-container-row">
+                <label for="node-input-param-container" style="width: auto">Input Parameters</label>
+                <ol id="node-input-param-container"></ol>
+            </div>
+        </div>
+
+        <div id="start-job-tab-robots" style="display:none">
+            <div class="form-row">
+                <div id="robotSchemes-wrapper">
+                    <input type="radio" class="robotScheme" name="robotScheme" value=1 id="byName" checked />
+                    <label for="byName">Specific Bots</label>
+                    <input type="radio" class="robotScheme" name="robotScheme" value=2 id="byNum" />
+                    <label for="byNum">No. of Bots</label>
+                    <input type="radio" class="robotScheme" name="robotScheme" value=3 id="allBots" />
+                    <label for="allBots">All Bots</label>
+                </div>
+            </div>
+            <div class="form-row" id="robotForm">
+                <div id="byName">
+                    <div class="form-row node-input-rule-container-row">
+                        <label for="node-input-name-container" style="width: auto">Name(s)</label>
+                        <ol id="node-input-name-container"></ol>
+                    </div>
+                </div>
+                <div id="byNumber">
+                    <input id="node-input-number"></input>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-row node-input-rule-container-row">
-        <label for="node-input-param-container" style="width: auto">Input Parameters</label>
-        <ol id="node-input-param-container"></ol>
-    </div>
-    <!-- <div class="form-row">
-        <label for="node-input-policy" style="width: auto">Proceed When Job </label>
-        <select id="node-input-policy" style="width: auto">
-            <option value=1>Starts</option>
-            <option value=2>Completes</option>
-        </select>
-    </div> -->
 </script>
 
 
@@ -52,9 +73,10 @@
             name: {value: ""},
             connection: {type:"orchestrator connection", required: true},
             process: {value: ""},
-            robot: {value: ""},
             policy: {value: 1},
-            params: {value: [{key: "", type: "str", value: ""}]}
+            params: {value: [{key: "", type: "str", value: ""}]},
+            names: {value: [{type: "str", value: ""}]},
+            number: {value: 0}
         },
         icon: "uipathLogo.svg",
         inputs: 1,
@@ -66,12 +88,29 @@
             },
         oneditprepare: function() {
 
-            $('#node-input-process').typedInput({
-                default: 'str',
-                types: ['str', 'msg', 'flow', 'global', 'jsonata']
+        /* SET UP TABS */
+            var tabs = RED.tabs.create({
+                id: "node-start-job-tabs",
+                onchange: function(tab) {
+                    $("#node-start-job-tabs-content").children().hide();
+                    $("#" + tab.id).show();
+                }
+            });
+            // Process Tab
+            tabs.addTab({
+                id: "start-job-tab-process",
+                label: 'Process',
+                iconClass: "fa fa-sitemap"
+            });
+            // Robot Tab
+            tabs.addTab({
+                id: "start-job-tab-robots",
+                label: "Robot(s)",
+                iconClass: "fa fa-user"
             });
 
-            $('#node-input-robot').typedInput({
+        /* PROCESS FORM */
+            $('#node-input-process').typedInput({
                 default: 'str',
                 types: ['str', 'msg', 'flow', 'global', 'jsonata']
             });
@@ -102,12 +141,54 @@
                 sortable: true
             });
 
-
             // Fill in persisted values
             try {
                 for (var row of this.params)
                     $("#node-input-param-container").editableList('addItem', row);
             } catch(TypeError) {}
+
+
+        /* ROBOT FORM */
+            // Create structure for names list
+            $('#node-input-name-container').editableList({
+                addItem: function(row,i,data) {
+                    
+                    // Ensure no overflow within row
+                    row.css( { overflow: 'hidden', whiteSpace: 'nowrap' } );
+
+                    // Add new value
+                    var value = $('<input type="text" class="rowVal node-input-names-value" placeholder="Name">').appendTo(row);
+                    $(value).typedInput({
+                        default: "str",
+                        types: ["str","msg","flow","global",'jsonata']
+                    });
+                    if (data.value) {
+                        $(value).typedInput('type', data.type);
+                        $(value).typedInput('value', data.value);
+                    }
+                    
+                },
+                removable: true,
+                sortable: true
+            });
+
+            // Fill in persisted values
+            try {
+                for (var row of this.names)
+                    $("#node-input-name-container").editableList('addItem', row);
+            } catch(TypeError) {
+                $("#node-input-name-container").editableList('addItem', {type: "str", value: ""});
+            }
+
+            $('#node-input-number').typedInput({
+                default: 'num',
+                types: ['num', 'msg', 'flow', 'global', 'jsonata']
+            });
+
+            // Set up scheme listener
+            $('#robotSchemes-wrapper > label').click(function() {
+                $('#robotForm').attr('data-selected', $(this).attr('for'));
+            });
         },
         oneditsave: function() {
             var node = this;
@@ -124,6 +205,21 @@
                 
                 node.params.push(row);
             });
+
+            // Save Names
+            node.names = [];
+            var names = $("#node-input-name-container").editableList('items');
+            names.each(function(i) {
+                var row = {
+                    type: $(this).find(".node-input-names-value").typedInput('type'),
+                    value: $(this).find(".node-input-names-value").typedInput('value')
+                };
+                
+                node.names.push(row);
+            });
+
+            // Get policy
+            node.policy = $("input[name='robotScheme']:checked").val();
         },
         oneditresize: function(size) {
             var rows = $("#dialog-form>div:not(.node-input-rule-container-row)");
@@ -137,3 +233,97 @@
         }
     });
 </script>
+
+
+
+<!-- CSS -->
+<!-- Style, baby -->
+<style>
+    /*Center Tabs*/
+        .red-ui-tabs ul {
+            display: flex;
+            justify-content: center;
+        }
+
+    /*Align process name input*/
+        #start-job-tab-process > div > .red-ui-typedInput-container {
+            width: 70% !important;
+        }
+
+    /*Style robot radio buttons*/
+        #start-job-tab-robots > .form-row {
+            display: flex;
+            justify-content: center;
+        }
+
+        #robotSchemes-wrapper {
+          display: inline-block;
+        }
+
+        #robotSchemes-wrapper label {
+            text-align: center;
+        }
+
+        .robotScheme {
+          position: absolute;
+          left: -9999em;
+          top: -9999em;
+        }
+        .robotScheme + label {
+          float: left;
+          padding: .5em 1em;
+          cursor: pointer;
+          border: 1px solid #28608f;
+          margin-right: -1px;
+          color: #fff;
+          background-color: #428bca;
+        }
+        .robotScheme + label:first-of-type {
+          border-radius: .7em 0 0 .7em;
+        }
+        .robotScheme + label:last-of-type {
+          border-radius: 0 .7em .7em 0;
+        }
+        .robotScheme:checked + label {
+          background-color: #3277b3;
+        }
+
+    /*Robot Form*/
+        #start-job-tab-robots {
+            overflow-x: hidden;
+        }
+
+        #robotForm {
+            margin-left: 0%;
+            width: 200%;
+            display: flex !important;
+            justify-content: flex-start !important;
+            transition: margin-left 500ms ease-in-out;
+        }
+
+        #byName, #byNumber {
+            width: 45%;
+            padding: 0em 5%;
+        }
+
+        #byNumber > .red-ui-typedInput-container {
+            width: 100% !important;
+        }
+
+        #node-input-name-container .red-ui-typedInput-container {
+            width: 90% !important;
+        }
+
+    /*Animate Robot Scheme*/
+        #robotForm[data-selected='byName'] {
+            margin-left: 0%;
+        }
+
+        #robotForm[data-selected='byNum'] {
+            margin-left: -100%;
+        }
+
+        #robotForm[data-selected='allBots'] {
+            margin-left: -200%;
+        }
+</style>
