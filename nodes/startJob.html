@@ -185,6 +185,10 @@
                 types: ['num', 'msg', 'flow', 'global', 'jsonata']
             });
 
+            // Set scheme
+            $("input[name=robotScheme]").val([this.policy]);
+            $('#robotForm').attr('data-selected', $(".robotScheme[value="+this.policy+"]").attr('id'));
+
             // Set up scheme listener
             $('#robotSchemes-wrapper > label').click(function() {
                 $('#robotForm').attr('data-selected', $(this).attr('for'));
