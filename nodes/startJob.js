@@ -5,41 +5,75 @@ module.exports = function(RED) {
     function OrchestratorStartJobNode(config) {
         RED.nodes.createNode(this,config);
 
-        this.on('input', function(msg) {
+        this.on('input', async function(msg) {
 
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
-            var data = {};
+            var params = {};
+            var names = {};
+            var apiRelease = Api["Releases"]("GetAll"),
+                apiRobots  = Api["Robots"]("GetAll"),
+                apiJobs    = Api["Jobs"]("StartJobs");
+            var jobStrat   = ["Specific", "RobotCount", "All"];
+            var jobParams  = { startInfo:
+                               { ReleaseKey: "",
+                                 Strategy: "",
+                                 RobotIds: [],
+                                 NoOfRobots: 0,
+                                 Source: "Manual" 
+                               } 
+                            }
 
             // Ensure node has connection
             Utilities.checkConnection(connection);
 
             try {
-                // Select Params
+            //<<<<<<<<<<<<RELEASE KEY>>>>>>>>>>>>
+                try {
+                    var res = await connection.request({ method: apiRelease[0], url: apiRelease[1] + "?$select=Key&$filter=ProcessKey eq '"+config.process+"'"});
+                    jobParams['startInfo']['ReleaseKey'] = res['data']['value'][0]['Key'];
+                } catch(e) {
+                    throw (e instanceof TypeError) ? "Could not find a process named " + config.process : e;
+                }
+
+            //<<<<<<<<<<<<ROBOT IDS>>>>>>>>>>>>
+                // If NAMED POLICY
+                if (config.policy == 0) {
+                    if (!config.names) throw "Please specify some robots to run this job.";
+
+                    // Select robot IDs to use
+                    names = Utilities.convertParams(config.names, msg, node);
+                    var queries = Object.values(names)
+                                        .reduce((q, n) => q += ` or Name eq '${n}'`, '?$select=Id&$filter=(')
+                                        .replace(' or ', '') + ')';
+
+                    // Get Robot IDs
+                    res = await connection.request({ method: apiRobots[0], url: apiRobots[1] + queries});
+                    if (res['data']['value'].length == 0) throw "Could not find your robot(s)."
+                    for(var id of res['data']['value'])
+                        jobParams['startInfo']['RobotIds'].push(id['Id']);
+                }
+
+            //<<<<<<<<<<<<START JOB>>>>>>>>>>>>
+                // Add Job Inputs
                 if (config.params.length != 0)
-                    data = Utilities.convertParams(config.params, msg, node);
+                    params = Utilities.convertParams(config.params, msg, node);
+                if (params && params["Id"]) 
+                    params["Id"] = parseInt(params["Id"]);
+                if (Object.keys(params).length) 
+                    jobParams['startInfo']['InputArguments'] = JSON.stringify(params);
 
-                // Get endpoint info
-                var endpoint = Api["Jobs"]("StartJobs");
+                // Fill remaining params
+                jobParams['startInfo']['Strategy'] = jobStrat[config.policy];
+                jobParams['startInfo']['NoOfRobots'] = (config.policy == 1) ? config.number : 0;
 
-                // Add path & query params if needed
-                var extension = Api.fillPath(endpoint[0], endpoint[1], data);
-
-                // Sanitize data
-                if (data && data["Id"]) data["Id"] = parseInt(data["Id"]);
-
-                // Fire!
-                connection.request({ method: endpoint[0], 
-                                     url: extension,
-                                     data: data })
-                            .then(r => {
-                                node.send({payload: r.data});
-                            })
-                            .catch(e => {
-                                node.error(e.response || e.message);
-                            });
+                // Start job
+                res = await connection.request({ method: apiJobs[0], url: apiJobs[1], data: jobParams});
+                msg.payload = res;
+                node.send(msg);
+            
             } catch(e) {
-                errorOut(node, e);
+                this.error(e.response || e.message || e);
             }
         });
     }

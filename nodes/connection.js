@@ -51,9 +51,9 @@ module.exports = function(RED) {
         }
 
 
-        this.requests = function(...calls) {
-            return axios.all(calls.map(c => this.request(c)));
-        }
+        // this.requests = function(calls) {
+        //     return axios.all(calls.map(c => this.request(c)));
+        // }
 
         //////////////////////////////
         /*ACTIONS*/

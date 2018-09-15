@@ -5,7 +5,7 @@ module.exports = function(RED) {
     function OrchestratorRequestNode(config) {
         RED.nodes.createNode(this,config);
 
-        this.on('input', function(msg) {
+        this.on('input', async function(msg) {
 
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
@@ -42,17 +42,13 @@ module.exports = function(RED) {
                 if (data && data["Id"]) data["Id"] = parseInt(data["Id"]);
 
                 // Fire!
-                connection.request({ method: endpoint[0], 
-                                     url: extension,
-                                     data: data })
-                            .then(r => {
-                                node.send({payload: r.data});
-                            })
-                            .catch(e => {
-                                node.error(e.response || e.message);
-                            });
+                var res = await connection.request({ method: endpoint[0], 
+                                                     url: extension,
+                                                     data: data })
+                msg.payload = res;
+                node.send(msg);
             } catch(e) {
-                this.error(e);
+                this.error(e.response || e.message || e);
             }
 
         });
