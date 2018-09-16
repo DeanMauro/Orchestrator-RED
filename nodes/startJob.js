@@ -30,10 +30,10 @@ module.exports = function(RED) {
             try {
             //<<<<<<<<<<<<RELEASE KEY>>>>>>>>>>>>
                 try {
-                    var res = await connection.request({ method: apiRelease[0], url: apiRelease[1] + "?$select=Key&$filter=ProcessKey eq '"+config.process+"'"});
+                    var res = await connection.request({ method: apiRelease[0], url: apiRelease[1] + `?$select=Key&$filter=(Name eq '${config.process}_${config.environment}')`});
                     jobParams['startInfo']['ReleaseKey'] = res['data']['value'][0]['Key'];
                 } catch(e) {
-                    throw (e instanceof TypeError) ? "Could not find a process named " + config.process : e;
+                    throw (e instanceof TypeError) ? `Could not find a process named ${config.process} in ${config.environment || "any environment"}` : e;
                 }
 
             //<<<<<<<<<<<<ROBOT IDS>>>>>>>>>>>>

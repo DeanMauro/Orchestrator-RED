@@ -3,6 +3,29 @@
 <!-- This is the text that appears in the info tab -->
 <script type="text/x-red" data-help-name="orchestrator start job">
     <p>Start a job in UiPath's Orchestrator.</p>
+
+    <br>
+
+    <h3>Properties</h3>
+    <dl class="message-properties">
+        <dt>Login<span class="property-type">String</span></dt>
+        <dd>Logs into your Orchestrator tenant.</dd>
+        <dt>Process<span class="property-type">String</span></dt>
+        <dd>The name & environment of the process to be run. As of v2018.3, jobs may also accept input parameters<sup>*</sup>.</dd>
+        <dt>Robot(s)<span class="property-type">String</span></dt>
+        <dd>The robot scheme used to run the job. You may specify robots by name, quantity, or run on all robots</dd>
+        <br>
+        <sup>*Path and query params may be included as well</sup>
+    </dl>
+
+
+    <br>
+
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">JSON</span></dt>
+        <dd>Orchestrator's Response</dd>
+    </dl>
 </script>
 
 
@@ -28,6 +51,10 @@
             <div class="form-row">
                 <label for="node-input-process">Name</label>
                 <input id="node-input-process"></input>
+            </div>
+            <div class="form-row">
+                <label for="node-input-environment">Environment</label>
+                <input id="node-input-environment"></input>
             </div>
             <div class="form-row node-input-rule-container-row">
                 <label for="node-input-param-container" style="width: auto">Input Parameters</label>
@@ -73,6 +100,7 @@
             name: {value: ""},
             connection: {type:"orchestrator connection", required: true},
             process: {value: ""},
+            environment: {value: ""},
             policy: {value: 1},
             params: {value: [{key: "", type: "str", value: ""}]},
             names: {value: [{type: "str", value: ""}]},
@@ -111,6 +139,11 @@
 
         /* PROCESS FORM */
             $('#node-input-process').typedInput({
+                default: 'str',
+                types: ['str', 'msg', 'flow', 'global', 'jsonata']
+            });
+
+            $('#node-input-environment').typedInput({
                 default: 'str',
                 types: ['str', 'msg', 'flow', 'global', 'jsonata']
             });

@@ -5,23 +5,24 @@
     <p>A direct line to UiPath's Orchestrator.</p>
 
     <h3>Details</h3>
-    <dl class="message-properties">
-        <p>You can instruct this node to contact Orchestrator by filling in its properties as per the Orchestrator API guidelines.</p>
-        <p>See the <a href="https://orchestrator.uipath.com/v2018.1/reference">Orchestrator API Guide</a> for a list of available calls.</p>
-    </dl>
+        <p>This node may perform any action in Orchestrator. See the <a href="https://platform.uipath.com/swagger/ui/index#/">Orchestrator Swagger Doc</a> for a list of available actions & their parameter formatting requirements as well as the <a href="https://orchestrator.uipath.com/v2018.2/reference">Orchestrator API Guide</a> for ideas.</p>
 
     <br>
 
 
-    <h3>Inputs</h3>
+    <h3>Properties</h3>
     <dl class="message-properties">
         <h6>Open the node and fill in the following properties:</h6>
+        <dt>Login<span class="property-type">String</span></dt>
+        <dd>Logs into your Orchestrator tenant so calls may be made.</dd>
         <dt>Category<span class="property-type">String</span></dt>
-        <dd>The Orchestrator element you wish to interact with <i>(e.g. Robot, Job, Process)</i>.</dd>
+        <dd>The Orchestrator element with which you'd like to interact <i>(e.g. Robot, Job, Process)</i>.</dd>
         <dt>Action<span class="property-type">String</span></dt>
         <dd>The action to take in the above category.</dd>
         <dt>Parameters<span class="property-type">List</span></dt>
-        <dd>Certain actions require more information. Use the add button to prepare all required parameters.</dd>
+        <dd>Certain actions require more information. Use the add button to prepare all required parameters.<sup>*</sup></dd>
+        <br>
+        <sup>*Path and query params may be included here as well</sup>
     </dl>
 
 
@@ -29,7 +30,8 @@
 
     <h3>Output</h3>
     <dl class="message-properties">
-        <dt>Orchestrator's Response<span class="property-type">JSON</span></dt>
+        <dt>payload<span class="property-type">JSON</span></dt>
+        <dd>Orchestrator's Response</dd>
     </dl>
 </script>
 
@@ -81,7 +83,7 @@
         <select id="action">
             <!-- General -->
             <option value="GetAll" class="Alerts Assets AuditLogs Environments HostLicenses Jobs Libraries Machines OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
-            <option value="GetOne" class="Environments HostLicenses Jobs Machines OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases Robots Tenants UserLoginAttempts Users">Get One</option>
+            <option value="GetById" class="Environments HostLicenses Jobs Machines OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases Robots Tenants UserLoginAttempts Users">Get By Id</option>
             <option value="Create" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Robots Roles Tenants Users">Create</option>
             <option value="Delete" class="Assets Environments Libraries OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Roles Tenants Users">Delete</option>
             <option value="DeleteBulk" class="Machines QueueItems Robots">Delete Bulk</option>

@@ -17,7 +17,8 @@
     "rpa",
     "automation",
     "robotic process automation",
-    "robot"
+    "robot",
+    "node-red"
   ],
   "author": "Dean Mauro",
   "license": "Apache-2.0",
