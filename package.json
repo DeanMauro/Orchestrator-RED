@@ -2,21 +2,25 @@
   "name": "node-red-contrib-uipath-orchestrator",
   "version": "1.0.0",
   "description": "A wrapper for the UiPath Orchestrator",
+  "homepage": "https://github.com/DeanMauro/Orchestrator-RED",
+  "bugs": "https://github.com/DeanMauro/Orchestrator-RED/issues",
   "main": "index.js",
   "dependencies": {
-    "axios": "latest",
-    "jquery-editable-select": "latest"
+    "axios": "latest"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "uipath",
-    "orchestrator"
+    "orchestrator",
+    "rpa",
+    "automation",
+    "robotic process automation",
+    "robot"
   ],
   "author": "Dean Mauro",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "node-red": {
     "nodes": {
       "orchestrator connection": "nodes/connection.js",
