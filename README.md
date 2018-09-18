@@ -5,7 +5,7 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 1. Install `Node.js`, `npm`, and `node-RED`.
 
-2. Navigate to your node-RED directory and run `npm install node-red-contrib-uipath-orchestrator` OR
+2. Navigate to your node-RED directory and run `npm install @uipath/node-red-contrib-uipath-orchestrator` OR
 
 3. Start node-RED, navigate to the hamburger menu in the top right corner, select *Manage Palette*, and add the UiPath Orchestrator nodes.
 

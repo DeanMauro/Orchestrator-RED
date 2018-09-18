@@ -45,7 +45,7 @@ module.exports = function(RED) {
         this.request = async function(p) {
             // Refresh token if needed
             if (!this.start || (Date.now() - this.start) >= 1500000)
-                this.getToken();
+                await this.getToken();
 
             return axios({...p, ...this.spec});
         }
