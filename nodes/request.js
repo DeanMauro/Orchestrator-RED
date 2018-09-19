@@ -24,7 +24,7 @@ module.exports = function(RED) {
 
                 // Select Params
                 if (config.params.length != 0)
-                    data = Utilities.convertParams(config.params, msg, node);
+                    data = Utilities.convertParams(config.params, msg, node, RED);
                 else if (msg.payload.params)
                     data = msg.payload.params;
 

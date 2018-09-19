@@ -42,7 +42,7 @@ module.exports = function(RED) {
                     if (!config.names) throw "Please specify some robots to run this job.";
 
                     // Select robot IDs to use
-                    names = Utilities.convertParams(config.names, msg, node);
+                    names = Utilities.convertParams(config.names, msg, node, RED);
                     var queries = Object.values(names)
                                         .reduce((q, n) => q += ` or Name eq '${n}'`, '?$select=Id&$filter=(')
                                         .replace(' or ', '') + ')';
@@ -57,7 +57,7 @@ module.exports = function(RED) {
             //<<<<<<<<<<<<START JOB>>>>>>>>>>>>
                 // Add Job Inputs
                 if (config.params.length != 0)
-                    params = Utilities.convertParams(config.params, msg, node);
+                    params = Utilities.convertParams(config.params, msg, node, RED);
                 if (params && params["Id"]) 
                     params["Id"] = parseInt(params["Id"]);
                 if (Object.keys(params).length) 
