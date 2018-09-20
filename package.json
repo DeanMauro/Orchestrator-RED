@@ -1,6 +1,6 @@
 {
   "name": "@uipath/node-red-contrib-uipath-orchestrator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A wrapper for the UiPath Orchestrator",
   "homepage": "https://github.com/DeanMauro/Orchestrator-RED",
   "bugs": "https://github.com/DeanMauro/Orchestrator-RED/issues",
