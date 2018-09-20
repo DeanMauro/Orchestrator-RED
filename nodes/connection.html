@@ -4,6 +4,7 @@
         defaults: {
             name: {value:""},
             url: {type: "text"},
+            ssl: {value:false},
             tenant: {type: "text"},
             user: {type: "text", required: true},
         },
@@ -26,6 +27,11 @@
     <div class="form-row">
          <label for="node-config-input-url"><i class="fa fa-globe"></i> Url</label>
          <input type="text" id="node-config-input-url" placeholder="https://platform.uipath.com">
+     </div>
+     <div class="form-row">
+         <label for="node-config-input-ssl">&nbsp;</label>
+         <input type="checkbox" id="node-config-input-ssl" style="display:inline-block; width:15px; vertical-align:baseline;">
+         <span>Self-signed cert?</span>
      </div>
     <div class="form-row">
          <label for="node-config-input-tenant"><i class="fa fa-users"></i> Tenant</label>

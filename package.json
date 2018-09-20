@@ -6,7 +6,8 @@
   "bugs": "https://github.com/DeanMauro/Orchestrator-RED/issues",
   "main": "index.js",
   "dependencies": {
-    "axios": "latest"
+    "axios": "latest",
+    "https": "latest"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

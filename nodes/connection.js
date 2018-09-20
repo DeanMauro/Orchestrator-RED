@@ -1,4 +1,5 @@
 const axios = require('axios');
+const https = require('https');
 
 module.exports = function(RED) {
     "use strict"
@@ -43,7 +44,7 @@ module.exports = function(RED) {
             try {
                 if (!this.start || (Date.now() - this.start) >= 1500000)
                     await this.getToken();
-                
+
                 return axios({...p, ...this.spec});
             } catch (e) { throw new Error(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); };
         }
@@ -56,6 +57,8 @@ module.exports = function(RED) {
         //////////////////////////////
         /*ACTIONS*/
         //////////////////////////////
+        if (config.ssl) this.spec['httpsAgent'] = new https.Agent({ rejectUnauthorized: false });   // Self-signed certs
+
         this.getToken()
             .then( () => { this.start = Date.now(); })
             .catch( () => { console.log(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); });
