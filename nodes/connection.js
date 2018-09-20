@@ -30,24 +30,22 @@ module.exports = function(RED) {
                                  password: this.credentials.password }
             };
             
-            try {
-                var res = await axios({...body, ...this.spec});
-                this.token = res['data']['result'];
-                this.spec['headers'] = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token};
+            var res = await axios({...body, ...this.spec});
+            this.token = res['data']['result'];
+            this.spec['headers'] = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token};
 
-                console.log("Refreshed Token");
-            } catch(e) {
-                return Promise.reject(new Error("Could not connect to Orchestrator. Please check your credentials."));
-            }
+            console.log("Refreshed Token");
         }
 
 
         this.request = async function(p) {
             // Refresh token if needed
-            if (!this.start || (Date.now() - this.start) >= 1500000)
-                await this.getToken();
-
-            return axios({...p, ...this.spec});
+            try {
+                if (!this.start || (Date.now() - this.start) >= 1500000)
+                    await this.getToken();
+                
+                return axios({...p, ...this.spec});
+            } catch (e) { throw new Error(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); };
         }
 
 
@@ -58,8 +56,9 @@ module.exports = function(RED) {
         //////////////////////////////
         /*ACTIONS*/
         //////////////////////////////
-        this.getToken();
-        this.start = Date.now();
+        this.getToken()
+            .then( () => { this.start = Date.now(); })
+            .catch( () => { console.log(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); });
     }
     
 

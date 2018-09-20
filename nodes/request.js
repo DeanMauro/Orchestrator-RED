@@ -11,11 +11,11 @@ module.exports = function(RED) {
             var connection = RED.nodes.getNode(config.connection);
             var data = {};
 
-            // Ensure node has connection
-            Utilities.checkConnection(connection);
-
             // Properties Input
             try {
+                // Ensure node has connection
+                Utilities.checkConnection(connection);
+
                 // Convert fields provided through msg variable
                 if (config.category.startsWith("Msg")) {
                     config.category = msg.payload.category;
@@ -44,7 +44,7 @@ module.exports = function(RED) {
                 // Fire!
                 var res = await connection.request({ method: endpoint[0], 
                                                      url: extension,
-                                                     data: data })
+                                                     data: data });
                 msg.payload = res;
                 node.send(msg);
             } catch(e) {

@@ -24,10 +24,10 @@ module.exports = function(RED) {
                                } 
                             }
 
-            // Ensure node has connection
-            Utilities.checkConnection(connection);
-
             try {
+                // Ensure node has connection
+                Utilities.checkConnection(connection);
+
             //<<<<<<<<<<<<RELEASE KEY>>>>>>>>>>>>
                 try {
                     var res = await connection.request({ method: apiRelease[0], url: apiRelease[1] + `?$select=Key&$filter=(Name eq '${config.process}_${config.environment}')`});
