@@ -61,7 +61,7 @@ module.exports = function(RED) {
 
         this.getToken()
             .then( () => { this.start = Date.now(); })
-            .catch( () => { console.log(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); });
+            .catch( () => { this.error(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); });
     }
     
 
