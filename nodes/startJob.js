@@ -69,6 +69,9 @@ module.exports = function(RED) {
 
                 // Start job
                 res = await connection.request({ method: apiJobs[0], url: apiJobs[1], data: jobParams});
+                delete res.request;
+                delete res.config;
+                delete res.headers;
                 msg.payload = res;
                 node.send(msg);
             

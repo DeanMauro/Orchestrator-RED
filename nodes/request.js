@@ -45,6 +45,9 @@ module.exports = function(RED) {
                 var res = await connection.request({ method: endpoint[0], 
                                                      url: extension,
                                                      data: data });
+                delete res.request;
+                delete res.config;
+                delete res.headers;
                 msg.payload = res;
                 node.send(msg);
             } catch(e) {
