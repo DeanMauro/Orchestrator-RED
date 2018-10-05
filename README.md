@@ -15,7 +15,7 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 A configuration node that authenticates all calls made to Orchestrator and automatically refreshes API tokens when needed.
 
-* **URL**: *optional* The URL of your Orchestrator instance. Defaults to https://platform.uipath.com is left blank.
+* **URL**: *optional* The URL of your Orchestrator instance. Defaults to https://platform.uipath.com if left blank.
 * **Tenant**: Your tenant
 * **Username**: Your username
 * **Password**: Your password. This value is encrypted when the flow is saved.
