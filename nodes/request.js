@@ -10,6 +10,7 @@ module.exports = function(RED) {
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
             var data = {};
+            var headers = {};
 
             // Properties Input
             try {
@@ -41,16 +42,19 @@ module.exports = function(RED) {
                 // Sanitize data
                 if (data && data["Id"]) data["Id"] = parseInt(data["Id"]);
 
+                // Get headers
+                [data, headers] = Utilities.pullHeaders(data);
+
                 // Fire!
                 var res = await connection.request({ method: endpoint[0], 
                                                      url: extension,
-                                                     data: data });
-                delete res.request;
-                delete res.config;
-                delete res.headers;
+                                                     data: data,
+                                                     headers: headers });
+                
                 msg.payload = res;
                 node.send(msg);
             } catch(e) {
+                if (e.response) ['request','config','headers'].forEach(k => {delete e.response[k]});
                 this.error(e.response || e.message || e);
             }
 

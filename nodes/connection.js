@@ -44,9 +44,15 @@ module.exports = function(RED) {
             try {
                 if (!this.start || (Date.now() - this.start) >= 1500000)
                     await this.getToken();
-
-                return axios({...p, ...this.spec});
             } catch (e) { throw new Error(`Orchestrator: Could not connect to ${this.tenant}/${this.user}. Please check your credentials.`); };
+
+            // Call
+            if (p.headers) this.spec.headers = {...p.headers, ...this.spec.headers};
+            var res = await axios({...p, ...this.spec});
+
+            // Sanitize & Return
+            ['request','config','headers'].forEach(k => {delete res[k]});
+            return res;
         }
 
 

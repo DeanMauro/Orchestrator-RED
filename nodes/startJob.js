@@ -10,6 +10,7 @@ module.exports = function(RED) {
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
             var params = {};
+            var headers = {};
             var names = {};
             var apiRelease = Api["Releases"]("GetAll"),
                 apiRobots  = Api["Robots"]("GetAll"),
@@ -28,9 +29,20 @@ module.exports = function(RED) {
                 // Ensure node has connection
                 Utilities.checkConnection(connection);
 
+                // Parse Parameters
+                if (config.params.length != 0)
+                    params = Utilities.convertParams(config.params, msg, node, RED);
+                if (params && params["Id"]) 
+                    params["Id"] = parseInt(params["Id"]);
+                if (Object.keys(params).length) 
+                    jobParams['startInfo']['InputArguments'] = JSON.stringify(params);
+
+                // Get headers
+                [params, headers] = Utilities.pullHeaders(params);
+
             //<<<<<<<<<<<<RELEASE KEY>>>>>>>>>>>>
                 try {
-                    var res = await connection.request({ method: apiRelease[0], url: apiRelease[1] + `?$select=Key&$filter=(Name eq '${config.process}_${config.environment}')`});
+                    var res = await connection.request({ method: apiRelease[0], headers: headers, url: apiRelease[1] + `?$select=Key&$filter=(Name eq '${config.process}_${config.environment}')`});
                     jobParams['startInfo']['ReleaseKey'] = res['data']['value'][0]['Key'];
                 } catch(e) {
                     throw (e instanceof TypeError) ? `Could not find a process named ${config.process} in ${config.environment || "any environment"}` : e;
@@ -48,34 +60,24 @@ module.exports = function(RED) {
                                         .replace(' or ', '') + ')';
 
                     // Get Robot IDs
-                    res = await connection.request({ method: apiRobots[0], url: apiRobots[1] + queries});
+                    res = await connection.request({ method: apiRobots[0], headers: headers, url: apiRobots[1] + queries});
                     if (res['data']['value'].length == 0) throw "Could not find your robot(s)."
                     for(var id of res['data']['value'])
                         jobParams['startInfo']['RobotIds'].push(id['Id']);
                 }
 
             //<<<<<<<<<<<<START JOB>>>>>>>>>>>>
-                // Add Job Inputs
-                if (config.params.length != 0)
-                    params = Utilities.convertParams(config.params, msg, node, RED);
-                if (params && params["Id"]) 
-                    params["Id"] = parseInt(params["Id"]);
-                if (Object.keys(params).length) 
-                    jobParams['startInfo']['InputArguments'] = JSON.stringify(params);
-
                 // Fill remaining params
                 jobParams['startInfo']['Strategy'] = jobStrat[config.policy];
                 jobParams['startInfo']['NoOfRobots'] = (config.policy == 1) ? config.number : 0;
 
                 // Start job
-                res = await connection.request({ method: apiJobs[0], url: apiJobs[1], data: jobParams});
-                delete res.request;
-                delete res.config;
-                delete res.headers;
+                res = await connection.request({ method: apiJobs[0], headers: headers, url: apiJobs[1], data: jobParams});
                 msg.payload = res;
                 node.send(msg);
             
             } catch(e) {
+                if (e.response) ['request','config','headers'].forEach(k => {delete e.response[k]});
                 this.error(e.response || e.message || e);
             }
         });
