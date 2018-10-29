@@ -9,6 +9,8 @@ module.exports = function(RED) {
 
             var node = this;
             var connection = RED.nodes.getNode(config.connection);
+            var proc = "";
+            var environment = "";
             var params = {};
             var headers = {};
             var names = {};
@@ -29,6 +31,10 @@ module.exports = function(RED) {
                 // Ensure node has connection
                 Utilities.checkConnection(connection);
 
+                // Parse Process & Environment
+                proc = Utilities.convert({value: config.process, type: config.processType}, msg, node, RED);
+                environment = Utilities.convert({value: config.environment, type: config.environmentType}, msg, node, RED);
+
                 // Parse Parameters
                 if (config.params.length != 0)
                     params = Utilities.convertParams(config.params, msg, node, RED);
@@ -42,10 +48,10 @@ module.exports = function(RED) {
 
             //<<<<<<<<<<<<RELEASE KEY>>>>>>>>>>>>
                 try {
-                    var res = await connection.request({ method: apiRelease[0], headers: headers, url: apiRelease[1] + `?$select=Key&$filter=(Name eq '${config.process}_${config.environment}')`});
+                    var res = await connection.request({ method: apiRelease[0], headers: headers, url: apiRelease[1] + `?$select=Key&$filter=(Name eq '${proc}_${environment}')`});
                     jobParams['startInfo']['ReleaseKey'] = res['data']['value'][0]['Key'];
                 } catch(e) {
-                    throw (e instanceof TypeError) ? `Could not find a process named ${config.process} in ${config.environment || "any environment"}` : e;
+                    throw (e instanceof TypeError) ? `Could not find a process named ${proc} in ${environment || "any environment"}` : e;
                 }
 
             //<<<<<<<<<<<<ROBOT IDS>>>>>>>>>>>>
@@ -64,6 +70,10 @@ module.exports = function(RED) {
                     if (res['data']['value'].length == 0) throw "Could not find your robot(s)."
                     for(var id of res['data']['value'])
                         jobParams['startInfo']['RobotIds'].push(id['Id']);
+                }
+                else if (config.policy == 1) {
+                    config.number = Utilities.convert({value: config.number, type: config.numberType}, msg, node, RED);
+                    if (isNaN(config.number)) throw "Please specify a valid number of robots.";
                 }
 
             //<<<<<<<<<<<<START JOB>>>>>>>>>>>>

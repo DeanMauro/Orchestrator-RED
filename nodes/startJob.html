@@ -51,10 +51,12 @@
             <div class="form-row">
                 <label for="node-input-process">Name</label>
                 <input id="node-input-process"></input>
+                <input type="hidden" id="node-input-processType">
             </div>
             <div class="form-row">
                 <label for="node-input-environment">Environment</label>
                 <input id="node-input-environment"></input>
+                <input type="hidden" id="node-input-environmentType">
             </div>
             <div class="form-row node-input-rule-container-row">
                 <label for="node-input-param-container" style="width: auto">Input Parameters</label>
@@ -82,6 +84,7 @@
                 </div>
                 <div id="byNumber">
                     <input id="node-input-number"></input>
+                    <input type="hidden" id="node-input-numberType">
                 </div>
             </div>
         </div>
@@ -99,12 +102,15 @@
         defaults: {
             name: {value: ""},
             connection: {type:"orchestrator connection", required: true},
-            process: {value: ""},
-            environment: {value: ""},
+            process: {value: '', validate: RED.validators.typedInput("processType")},
+            processType: {value: 'str'},
+            environment: {value: '', validate: RED.validators.typedInput("environmentType")},
+            environmentType: {value: 'str'},
             policy: {value: 0},
             params: {value: [{key: "", type: "str", value: ""}]},
             names: {value: [{type: "str", value: ""}]},
-            number: {value: 0}
+            number: {value: ''},
+            numberType: {value: 'num'}
         },
         icon: "uipathLogo.svg",
         inputs: 1,
@@ -138,13 +144,20 @@
             });
 
         /* PROCESS FORM */
+            if (this.processType == null) this.processType = "str";
+            $("#node-input-processType").val(this.processType);
             $('#node-input-process').typedInput({
                 default: 'str',
+                typeField: $("#node-input-processType"),
                 types: ['str', 'msg', 'flow', 'global', 'jsonata']
             });
 
+
+            if (this.environmentType == null) this.environmentType = "str";
+            $("#node-input-environmentType").val(this.environmentType);
             $('#node-input-environment').typedInput({
                 default: 'str',
+                typeField: $("#node-input-environmentType"),
                 types: ['str', 'msg', 'flow', 'global', 'jsonata']
             });
 
@@ -213,8 +226,11 @@
                 $("#node-input-name-container").editableList('addItem', {type: "str", value: ""});
             }
 
+            if (this.numberType == null) this.numberType = "num";
+            $("#node-input-numberType").val(this.numberType);
             $('#node-input-number').typedInput({
                 default: 'num',
+                typeField: $("#node-input-numberType"),
                 types: ['num', 'msg', 'flow', 'global', 'jsonata']
             });
 
@@ -229,7 +245,7 @@
         },
         oneditsave: function() {
             var node = this;
-            
+
             // Save Parameters
             node.params = [];
             var params = $("#node-input-param-container").editableList('items');
