@@ -22,7 +22,7 @@ A configuration node that authenticates all calls made to Orchestrator and autom
 
 ### Request
 
-A wrapper of the full Orchestrator API allowing any request to be made. Currently configured for v2018.3 and includes Organizational Units.
+A wrapper of the full Orchestrator API allowing any request to be made. Currently configured for v2018.4 and includes Organizational Units.
 
 * **Login**: The connection node used to authenticate all calls.
 * **Category**: The targeted Orchestrator element *(e.g. robots, queues, assets)*
