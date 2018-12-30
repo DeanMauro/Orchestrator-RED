@@ -53,141 +53,235 @@
         <select id="category">
             <option value="Alerts">Alerts</option>
             <option value="Assets">Assets</option>
-            <option value="AuditLogs">Audit Logs</option>
+            <option value="AuditLogs">AuditLogs</option>
             <option value="Environments">Environments</option>
             <option value="Jobs">Jobs</option>
+            <option value="Libraries">Libraries</option>
+            <option value="LicensesNamedUser">LicensesNamedUser</option>
+            <option value="LicensesRuntime">LicensesRuntime</option>
             <option value="Logs">Logs</option>
-            <option value="OrganizationUnits">Organization Units</option>
+            <option value="Machines">Machines</option>
+            <option value="MessageTemplates">MessageTemplates</option>
+            <option value="OrganizationUnits">OrganizationUnits</option>
             <option value="Permissions">Permissions</option>
+            <option value="ProcessSchedules">ProcessSchedules</option>
             <option value="Processes">Processes</option>
-            <option value="ProcessSchedules">Process Schedules</option>
-            <option value="QueueDefinitions">Queue Definitions</option>
-            <option value="QueueItemEvents">Queue Item Events</option>
-            <option value="QueueItemComments">Queue Item Comments</option>
-            <option value="QueueItems">Queue Items</option>
-            <option value="QueueProcessingRecords">Queue Processing Records</option>
+            <option value="QueueDefinitions">QueueDefinitions</option>
+            <option value="QueueItemComments">QueueItemComments</option>
+            <option value="QueueItemEvents">QueueItemEvents</option>
+            <option value="QueueItems">QueueItems</option>
+            <option value="QueueProcessingRecords">QueueProcessingRecords</option>
             <option value="Queues">Queues</option>
             <option value="Releases">Releases</option>
-            <option value="RobotLogs">Robot Logs</option>
+            <option value="RobotLogs">RobotLogs</option>
             <option value="Robots">Robots</option>
             <option value="Roles">Roles</option>
             <option value="Sessions">Sessions</option>
             <option value="Stats">Stats</option>
             <option value="Tenants">Tenants</option>
             <option value="Users">Users</option>
+            <option value="Webhooks">Webhooks</option>
         </select>
     </div>
 
     <div class="form-row">
         <label for="action"><i class="fa fa-bolt"></i> Action</label>
         <select id="action">
-            <!-- General -->
-            <option value="GetAll" class="Alerts Assets AuditLogs Environments HostLicenses Jobs Libraries Machines OrganizationUnits Permissions Processes ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases RobotLogs Robots Roles Sessions Tenants Users">Get All</option>
-            <option value="GetById" class="Environments HostLicenses Jobs Machines OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueItemEvents QueueItems QueueProcessingRecords Queues Releases Robots Tenants UserLoginAttempts Users">Get By Id</option>
-            <option value="Create" class="Assets Environments OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Robots Roles Tenants Users">Create</option>
-            <option value="Delete" class="Assets Environments Libraries OrganizationUnits ProcessSchedules QueueDefinitions QueueItemComments QueueProcessingRecords Releases Roles Tenants Users">Delete</option>
-            <option value="DeleteBulk" class="Machines QueueItems Robots">Delete Bulk</option>
-            <option value="Edit" class="Assets OrganizationUnits ProcessSchedules QueueDefinitions Releases Robots Roles Tenants Users">Edit</option>
-            <option value="Update" class="Environments">Update</option>
             <!-- Alerts -->
+            <option value="GetAll" class="Alerts">Get All</option>
             <option value="GetUnreadCount" class="Alerts">Get Unread Count</option>
             <option value="MarkAsRead" class="Alerts">Mark As Read</option>
             <option value="RaiseProcessAlert" class="Alerts">Raise Process Alert</option>
             <!-- Assets -->
-            <option value="GetRobotAsset" class="Assets">Get Robot-Associated Asset</option>
-            <option value="GetRobotAsset" class="Assets">Get Robot-Associated Asset By Robot Id</option>
-            <!-- Audit Logs -->
-            <option value="GetAuditLogDetails" class="AuditLogs">Get Audit Log Details</option>
+            <option value="GetAll" class="Assets">Get All</option>
+            <option value="Create" class="Assets">Create</option>
+            <option value="Edit" class="Assets">Edit</option>
+            <option value="Delete" class="Assets">Delete</option>
+            <option value="GetRobotAssetByNameForRobotKey" class="Assets">Get Robot Asset By Name For Robot Key</option>
+            <option value="GetRobotAssetByRobotId" class="Assets">Get Robot Asset By Robot Id</option>
+            <option value="GetRobotAssetByRobotidAndAssetname" class="Assets">Get Robot Asset By Robotid And Assetname</option>
+            <!-- AuditLogs -->
+            <option value="GetAll" class="AuditLogs">Get All</option>
+            <option value="GetAuditLogDetailsByAuditlogid" class="AuditLogs">Get Audit Log Details By Auditlogid</option>
+            <option value="Reports" class="AuditLogs">Reports</option>
             <!-- Environments -->
-            <option value="GetRobotsForEnvironment" class="Environments">Get Robots for Environment</option>
-            <option value="GetRobotIdsForEnvironment" class="Environments">Get Robot Ids for Environment</option>
+            <option value="GetAll" class="Environments">Get All</option>
+            <option value="Create" class="Environments">Create</option>
+            <option value="GetById" class="Environments">Get By Id</option>
+            <option value="Edit" class="Environments">Edit</option>
+            <option value="Delete" class="Environments">Delete</option>
+            <option value="GetRobotsForEnvironmentByKey" class="Environments">Get Robots For Environment By Key</option>
+            <option value="GetRobotIdsForEnvironmentByKey" class="Environments">Get Robot Ids For Environment By Key</option>
             <option value="AddRobot" class="Environments">Add Robot</option>
             <option value="RemoveRobot" class="Environments">Remove Robot</option>
             <option value="SetRobots" class="Environments">Set Robots</option>
-            <!-- Host Licenses -->
-            <option value="GetTenantLicense" class="HostLicenses">Get Tenant License</option>
-            <option value="DeleteTenantLicense" class="HostLicenses">Delete Tenant License</option>
-            <option value="SetTenantLicense" class="HostLicenses">Set Tenant License</option>
             <!-- Jobs -->
-            <option value="Create" class="Jobs">Post New Entity to EntitySet Jobs</option>
-            <option value="Update" class="Jobs">Replace Entity in EntitySet Jobs</option>
-            <option value="StartJobs" class="Jobs">Start Job</option>
+            <option value="GetAll" class="Jobs">Get All</option>
+            <option value="GetById" class="Jobs">Get By Id</option>
+            <option value="StartJobs" class="Jobs">Start Jobs</option>
             <option value="StopJob" class="Jobs">Stop Job</option>
             <option value="StopJobs" class="Jobs">Stop Jobs</option>
             <!-- Libraries -->
-            <option value="GetVersions" class="Libraries">Get Versions By PackageId</option>
-            <!-- Licenses -->
-            <option value="GetLicensesNamedUser" class="Licenses">Get Licenses: Named User By Robot Type</option>
-            <option value="GetLicensesRuntimem" class="Licenses">Get Licenses: Runtime By Robot Type</option>
+            <option value="GetAll" class="Libraries">Get All</option>
+            <option value="Delete" class="Libraries">Delete</option>
+            <option value="GetVersionsByPackageid" class="Libraries">Get Versions By Packageid</option>
+            <option value="DownloadPackageByKey" class="Libraries">Download Package By Key</option>
+            <option value="UploadPackage" class="Libraries">Upload Package</option>
+            <!-- LicensesNamedUser -->
+            <option value="GetLicensesNamedUserByRobottype" class="LicensesNamedUser">Get Licenses Named User By Robottype</option>
+            <!-- LicensesRuntime -->
+            <option value="GetLicensesRuntimeByRobottype" class="LicensesRuntime">Get Licenses Runtime By Robottype</option>
+            <option value="ToggleEnabledByKey" class="LicensesRuntime">Toggle Enabled By Key</option>
             <!-- Logs -->
-            <option value="Create" class="Logs">Insert a log entry</option>
-            <option value="SubmitLogs" class="Logs">Insert a collection of log entries</option>
-            <!-- Organization Units -->
-            <option value="GetUsersForUnit" class="OrganizationUnits">Get Users for Unit</option>
-            <option value="GetUserIdsForUnit" class="OrganizationUnits">Get User Ids for Unit</option>
+            <option value="Create" class="Logs">Create</option>
+            <option value="SubmitLogs" class="Logs">Submit Logs</option>
+            <!-- Machines -->
+            <option value="GetAll" class="Machines">Get All</option>
+            <option value="Create" class="Machines">Create</option>
+            <option value="GetById" class="Machines">Get By Id</option>
+            <option value="Edit" class="Machines">Edit</option>
+            <option value="Delete" class="Machines">Delete</option>
+            <option value="Update" class="Machines">Update</option>
+            <option value="DeleteBulk" class="Machines">Delete Bulk</option>
+            <!-- MessageTemplates -->
+            <option value="GetAll" class="MessageTemplates">Get All</option>
+            <option value="Edit" class="MessageTemplates">Edit</option>
+            <!-- OrganizationUnits -->
+            <option value="GetAll" class="OrganizationUnits">Get All</option>
+            <option value="Create" class="OrganizationUnits">Create</option>
+            <option value="GetById" class="OrganizationUnits">Get By Id</option>
+            <option value="Edit" class="OrganizationUnits">Edit</option>
+            <option value="Delete" class="OrganizationUnits">Delete</option>
+            <option value="GetUsersForUnitByKey" class="OrganizationUnits">Get Users For Unit By Key</option>
+            <option value="GetUserIdsForUnitByKey" class="OrganizationUnits">Get User Ids For Unit By Key</option>
             <option value="SetUsers" class="OrganizationUnits">Set Users</option>
+            <!-- Permissions -->
+            <option value="GetAll" class="Permissions">Get All</option>
+            <!-- ProcessSchedules -->
+            <option value="GetAll" class="ProcessSchedules">Get All</option>
+            <option value="Create" class="ProcessSchedules">Create</option>
+            <option value="GetById" class="ProcessSchedules">Get By Id</option>
+            <option value="Edit" class="ProcessSchedules">Edit</option>
+            <option value="Delete" class="ProcessSchedules">Delete</option>
+            <option value="SetEnabled" class="ProcessSchedules">Set Enabled</option>
+            <option value="GetRobotIdsForScheduleByKey" class="ProcessSchedules">Get Robot Ids For Schedule By Key</option>
             <!-- Processes -->
-            <option value="Delete" class="Processes">Delete Package</option>
-            <option value="GetProcessVersions" class="Processes">Get Process Versions</option>
-            <option value="GetArguments" class="Processes">Get Arguments By Key</option>
+            <option value="GetAll" class="Processes">Get All</option>
+            <option value="Delete" class="Processes">Delete</option>
+            <option value="GetProcessVersionsByProcessid" class="Processes">Get Process Versions By Processid</option>
+            <option value="DownloadPackageByKey" class="Processes">Download Package By Key</option>
+            <option value="UploadPackage" class="Processes">Upload Package</option>
+            <option value="GetArgumentsByKey" class="Processes">Get Arguments By Key</option>
             <option value="SetArguments" class="Processes">Set Arguments</option>
-            <!-- Process Schedules -->
-            <option value="SetEnabled" class="ProcessSchedules">Enable/Disable</option>
-            <option value="GetRobotIdsForSchedule" class="ProcessSchedules">Get Robot Ids</option>
-            <!-- Queue Item Comments -->
-            <option value="Update" class="QueueItemComments">Replace Entity in EntitySet QueueItemComments</option>
-            <option value="GetQueueItemCommentsHistory" class="QueueItemComments">Get History</option>
-            <!-- Queue Item Events -->
-            <option value="GetQueueItemEventsHistory" class="QueueItemEvents">Get History</option>
-            <!-- Queue Items -->
-            <option value="Create" class="QueueItems">Post Entity to EntitySet QueueItems</option>
-            <option value="Replace" class="QueueItems">Replace Entity in EntitySet QueueItems</option>
-            <option value="Update" class="QueueItems">Update Entity in EntitySet QueueItems</option>
+            <!-- QueueDefinitions -->
+            <option value="GetAll" class="QueueDefinitions">Get All</option>
+            <option value="Create" class="QueueDefinitions">Create</option>
+            <option value="GetById" class="QueueDefinitions">Get By Id</option>
+            <option value="Edit" class="QueueDefinitions">Edit</option>
+            <option value="Delete" class="QueueDefinitions">Delete</option>
+            <option value="Reports" class="QueueDefinitions">Reports</option>
+            <!-- QueueItemComments -->
+            <option value="GetAll" class="QueueItemComments">Get All</option>
+            <option value="Create" class="QueueItemComments">Create</option>
+            <option value="GetById" class="QueueItemComments">Get By Id</option>
+            <option value="Edit" class="QueueItemComments">Edit</option>
+            <option value="Delete" class="QueueItemComments">Delete</option>
+            <option value="GetQueueItemCommentsHistoryByQueueitemid" class="QueueItemComments">Get Queue Item Comments History By Queueitemid</option>
+            <!-- QueueItemEvents -->
+            <option value="GetAll" class="QueueItemEvents">Get All</option>
+            <option value="GetById" class="QueueItemEvents">Get By Id</option>
+            <option value="GetQueueItemEventsHistoryByQueueitemid" class="QueueItemEvents">Get Queue Item Events History By Queueitemid</option>
+            <!-- QueueItems -->
+            <option value="GetAll" class="QueueItems">Get All</option>
+            <option value="GetById" class="QueueItems">Get By Id</option>
+            <option value="Delete" class="QueueItems">Delete</option>
             <option value="GetItemProcessingHistory" class="QueueItems">Get Item Processing History</option>
             <option value="SetItemReviewStatus" class="QueueItems">Set Item Review Status</option>
-            <option value="SetTransactionProgress" class="QueueItems">Update Status to 'In Progress'</option>
+            <option value="DeleteBulk" class="QueueItems">Delete Bulk</option>
+            <option value="SetTransactionProgress" class="QueueItems">Set Transaction Progress</option>
             <option value="SetItemReviewer" class="QueueItems">Set Item Reviewer</option>
             <option value="UnsetItemReviewer" class="QueueItems">Unset Item Reviewer</option>
             <option value="GetReviewers" class="QueueItems">Get Reviewers</option>
-            <!-- Queue Processing Records -->
-            <option value=RetrieveLastDaysProcessingRecords" class="QueueProcessingRecords">Get Records for Last X Days</option>
-            <option value="RetrieveQueuesProcessingStatus" class="QueueProcessingRecords">Get Processing Status for All Queues</option>
+            <!-- QueueProcessingRecords -->
+            <option value="RetrieveLastDaysProcessingRecordsByDaysnoAndQueuedefinitionid" class="QueueProcessingRecords">Retrieve Last Days Processing Records</option>
+            <option value="RetrieveQueuesProcessingStatus" class="QueueProcessingRecords">Retrieve Queues Processing Status</option>
             <!-- Queues -->
             <option value="StartTransaction" class="Queues">Start Transaction</option>
-            <option value="AddQueueItem" class="Queues">Add a Queue Item</option>
-            <option value="SetTransactionResult" class="Queues">Set Result of Transaction</option>
+            <option value="AddQueueItem" class="Queues">Add Queue Item</option>
+            <option value="SetTransactionResult" class="Queues">Set Transaction Result</option>
             <!-- Releases -->
-            <option value="UpdateToSpecificPackageVersion" class="Releases">Update Package Version to a Given Release</option>
-            <option value="UpdateToLatestPackageVersion" class="Releases">Update Package Version to Latest Release</option>
-            <option value="RollbackToPreviousReleaseVersion" class="Releases">Revert Package Version to Most Recent</option>
-            <!-- Robot Logs -->
+            <option value="GetAll" class="Releases">Get All</option>
+            <option value="Create" class="Releases">Create</option>
+            <option value="GetById" class="Releases">Get By Id</option>
+            <option value="Edit" class="Releases">Edit</option>
+            <option value="Delete" class="Releases">Delete</option>
+            <option value="Update" class="Releases">Update</option>
+            <option value="UpdateToSpecificPackageVersion" class="Releases">Update To Specific Package Version</option>
+            <option value="UpdateToLatestPackageVersion" class="Releases">Update To Latest Package Version</option>
+            <option value="RollbackToPreviousReleaseVersion" class="Releases">Rollback To Previous Release Version</option>
+            <!-- RobotLogs -->
+            <option value="GetAll" class="RobotLogs">Get All</option>
             <option value="GetTotalCount" class="RobotLogs">Get Total Count</option>
+            <option value="Reports" class="RobotLogs">Reports</option>
             <!-- Robots -->
-            <option value="GetMachineNameToLicenseKeyMappings" class="Robots">Get Machine Name to License Key Mappings</option>
+            <option value="GetAll" class="Robots">Get All</option>
+            <option value="Create" class="Robots">Create</option>
+            <option value="GetById" class="Robots">Get By Id</option>
+            <option value="Edit" class="Robots">Edit</option>
+            <option value="Delete" class="Robots">Delete</option>
+            <option value="GetMachineNameToLicenseKeyMappings" class="Robots">Get Machine Name To License Key Mappings</option>
             <option value="GetUsernames" class="Robots">Get Usernames</option>
-            <option value="GetRobotsForProcess" class="Robots">Get Robots For Process</option>
+            <option value="GetRobotsForProcessByProcessid" class="Robots">Get Robots For Process By Processid</option>
+            <option value="DeleteBulk" class="Robots">Delete Bulk</option>
             <option value="ConvertToFloating" class="Robots">Convert To Floating</option>
             <!-- Roles -->
-            <option value="GetUsersForRole" class="Roles">Get Users for Role</option>
-            <option value="GetUserIdsForRole" class="Roles">Get User Ids for Role</option>
+            <option value="GetAll" class="Roles">Get All</option>
+            <option value="Create" class="Roles">Create</option>
+            <option value="GetById" class="Roles">Get By Id</option>
+            <option value="Edit" class="Roles">Edit</option>
+            <option value="Delete" class="Roles">Delete</option>
+            <option value="GetUsersForRoleByKey" class="Roles">Get Users For Role By Key</option>
+            <option value="GetUserIdsForRoleByKey" class="Roles">Get User Ids For Role By Key</option>
             <option value="SetUsers" class="Roles">Set Users</option>
+            <!-- Sessions -->
+            <option value="GetAll" class="Sessions">Get All</option>
             <!-- Stats -->
-            <option value="GetCountStats" class="Stats">Get Entity Counts</option>
-            <option value="GetSessionsStats" class="Stats">Get Robot Counts</option>
-            <option value="GetJobsStats" class="Stats">Get Job Counts</option>
-            <option value="Stats" class="Stats">Get the licensing usage statistics</option>
+            <option value="GetCountStats" class="Stats">Get Count Stats</option>
+            <option value="GetSessionsStats" class="Stats">Get Sessions Stats</option>
+            <option value="GetJobsStats" class="Stats">Get Jobs Stats</option>
+            <option value="GetLicenseStats" class="Stats">Get License Stats</option>
             <!-- Tenants -->
-            <option value="SetActive" class="Tenants">Activate/Deactivate</option>
+            <option value="GetAll" class="Tenants">Get All</option>
+            <option value="Create" class="Tenants">Create</option>
+            <option value="GetById" class="Tenants">Get By Id</option>
+            <option value="Delete" class="Tenants">Delete</option>
+            <option value="SetActive" class="Tenants">Set Active</option>
             <!-- Users -->
-            <option value="GetCurrentPermissions" class="Users">Get User Permissions</option>
-            <option value="GetCurrentUser" class="Users">Get Details About Current User</option>
-            <option value="ToggleRole" class="Users">Associate/Dissociate User from Role</option>
-            <option value="ToggleOrganizationUnit" class="Users">Associate/Dissociate User from Organization Unit</option>
-            <option value="ImportUsers" class="Users">Import Users and Associate Them with Given Roles</option>
-            <option value="ChangePassword" class="Users">Change User's Password</option>
-            <option value="SetActive" class="Users">Activate/Deactivate</option>
+            <option value="GetAll" class="Users">Get All</option>
+            <option value="Create" class="Users">Create</option>
+            <option value="GetById" class="Users">Get By Id</option>
+            <option value="Edit" class="Users">Edit</option>
+            <option value="Delete" class="Users">Delete</option>
+            <option value="Update" class="Users">Update</option>
+            <option value="GetCurrentPermissions" class="Users">Get Current Permissions</option>
+            <option value="GetCurrentUser" class="Users">Get Current User</option>
+            <option value="ToggleRole" class="Users">Toggle Role</option>
+            <option value="ImportUsers" class="Users">Import Users</option>
+            <option value="ToggleOrganizationUnit" class="Users">Toggle Organization Unit</option>
+            <option value="ChangePassword" class="Users">Change Password</option>
+            <option value="SetActive" class="Users">Set Active</option>
             <option value="ChangeCulture" class="Users">Change Culture</option>
             <option value="UpdatePassword" class="Users">Update Password</option>
+            <!-- Webhooks -->
+            <option value="GetAll" class="Webhooks">Get All</option>
+            <option value="Create" class="Webhooks">Create</option>
+            <option value="GetById" class="Webhooks">Get By Id</option>
+            <option value="Edit" class="Webhooks">Edit</option>
+            <option value="Delete" class="Webhooks">Delete</option>
+            <option value="Update" class="Webhooks">Update</option>
+            <option value="Ping" class="Webhooks">Ping</option>
+            <option value="GetEventTypes" class="Webhooks">Get Event Types</option>
+            <option value="TriggerCustom" class="Webhooks">Trigger Custom</option>
         </select>
     </div>
 
@@ -319,5 +413,10 @@
     .rowKey, .red-ui-typedInput-container {
         width: 48% !important;
         margin-right: 2%; 
+    }
+
+    .node-input-rule-container-row .red-ui-editableList-container {
+        height: auto !important;
+        max-height: 16em !important;
     }
 </style>
