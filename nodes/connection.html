@@ -1,20 +1,51 @@
 <script type="text/javascript">
+    function GetAuthCode() {
+
+    }
+
     RED.nodes.registerType('orchestrator connection',{
         category: 'config',
         defaults: {
             name: {value:""},
-            url: {type: "text"},
+            url: {type: "text"}, //TODO Add validations for required fields
             ssl: {value:false},
+            account: {type: "text"},
             tenant: {type: "text"},
-            user: {type: "text", required: true},
+            user: {type: "text"},
+            policy: {value: 0}
         },
         credentials: {
-            password: {type: "password", required: true}
+            password: {type: "password"},
+            authcode: {type: "password"},
+            verifier: {type: "password"}
         },
         paletteLabel: 'connection',
         label: function() {
-            if (this.user && !this.tenant) this.tenant = "default";
-            return this.name||this.tenant +'/'+this.user||"";
+            if (this.name)
+                return this.name;
+            else if (this.policy == 0)
+                return this.tenant||"default" +'/'+ this.user||"";
+            else
+                return this.service||"platform" +'/'+ this.tenant||"";
+        },
+        oneditprepare: function() {
+            // Set scheme
+            $("input[name=authScheme]").val([this.policy]);
+            $('#authForms').attr('data-selected', $(".authScheme[value="+this.policy+"]").attr('id'));
+
+            // Set up scheme listener
+            $('#authSchemesPill > label').click(function() {
+                $('#authForms').attr('data-selected', $(this).attr('for'));
+            });
+
+            // Set CSS slide animation
+            //TODO fix this $('#authForms').CSS('transition', 'margin-left 500ms ease-in-out');
+        },
+        oneditsave: function() {
+            var node = this;
+
+            // Get policy
+            node.policy = $("input[name='authScheme']:checked").val();
         }
     });
 </script>
@@ -24,29 +55,145 @@
         <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-name">
     </div>
-    <div class="form-row">
-         <label for="node-config-input-url"><i class="fa fa-globe"></i> Url</label>
-         <input type="text" id="node-config-input-url" placeholder="https://platform.uipath.com">
-     </div>
-     <div class="form-row">
-         <label for="node-config-input-ssl">&nbsp;</label>
-         <input type="checkbox" id="node-config-input-ssl" style="display:inline-block; width:15px; vertical-align:baseline;">
-         <span>Self-signed cert?</span>
-     </div>
-    <div class="form-row">
-         <label for="node-config-input-tenant"><i class="fa fa-users"></i> Tenant</label>
-         <input type="text" id="node-config-input-tenant" placeholder="default">
-     </div>
-     <div class="form-row">
-         <label for="node-config-input-user"><i class="fa fa-user"></i> Username</label>
-         <input type="text" id="node-config-input-user">
-     </div>
-     <div class="form-row">
-         <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
-         <input type="password" id="node-config-input-password">
-     </div>
+    <div class="form-row" id="authSchemesParent">
+        <div id="authSchemesPill">
+            <input type="radio" class="authScheme" name="authScheme" value=0 id="basic" checked />
+            <label for="basic">On Premise</label>
+            <input type="radio" class="authScheme" name="authScheme" value=1 id="interactive" />
+            <label for="interactive">Cloud</label>
+        </div>
+    </div>
+    <hr>
+    <div id="formHolder">
+        <div class="form-row" id="authForms">
+            <div id="onPremiseForm">
+                <div class="form-row">
+                     <label for="node-config-input-url"><i class="fa fa-globe"></i> Url</label>
+                     <input type="text" id="node-config-input-url">
+                 </div>
+                 <div class="form-row">
+                     <label for="node-config-input-ssl">&nbsp;</label>
+                     <input type="checkbox" id="node-config-input-ssl" style="display:inline-block; width:15px; vertical-align:baseline;">
+                     <span>Self-signed cert?</span>
+                 </div>
+                <div class="form-row">
+                     <label for="node-config-input-tenant"><i class="fa fa-users"></i> Tenant</label>
+                     <input type="text" id="node-config-input-tenant" placeholder="default">
+                 </div>
+                <div class="form-row">
+                    <label for="node-config-input-user"><i class="fa fa-user"></i> Username</label>
+                    <input type="text" id="node-config-input-user">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
+                    <input type="password" id="node-config-input-password">
+                </div>
+            </div>
+            <div id="cloudForm">
+                <div class="form-row">
+                     <label for="node-config-input-account"><i class="fa fa-gear"></i> Account</label>
+                     <input type="text" id="node-config-input-account">
+                 </div>
+                <div class="form-row">
+                     <label for="node-config-input-tenant"><i class="fa fa-users"></i> Service</label>
+                     <input type="text" id="node-config-input-tenant" placeholder="default">
+                 </div>
+                <input id="authorizeButton" type="button" value="Authorize">
+            </div>
+        </div>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="orchestrator connection">
-    <p>Logs in to Orchestrator with given <code>tenant</code>, <code>user</code>, and <code>password</code>.</p>
+    <p>Logs in to Orchestrator with given <code>tenant</code>, <code>user</code>, and <code>password</code> or via interactive login.</p>
 </script>
+
+<!-- CSS -->
+<!-- Style, baby -->
+<style>
+    
+    /*Style robot radio buttons*/
+        #authSchemesParent {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        hr {
+            margin: 12px 0 !important;
+        }
+
+        #authSchemesPill {
+            display: inline-block;
+        }
+
+        #authSchemesPill label {
+            text-align: center;
+            margin-bottom: 0 !important;
+        }
+
+        .authScheme {
+          position: absolute;
+          left: -9999em;
+          top: -9999em;
+        }
+        .authScheme + label {
+          float: left;
+          padding: .5em 1em;
+          cursor: pointer;
+          border: 1px solid #FF5A2E;
+          margin-right: -1px;
+          color: #fff;
+          background-color: #FA4616;
+        }
+        .authScheme + label:first-of-type {
+          border-radius: .7em 0 0 .7em;
+        }
+        .authScheme + label:last-of-type {
+          border-radius: 0 .7em .7em 0;
+        }
+        .authScheme:checked + label {
+          background-color: #C32A01;
+        }
+
+    /*Auth Form*/
+        #formHolder {
+            overflow-x: hidden;
+        }
+
+        #authForms {
+            margin-left: 0%;
+            width: 200%;
+            display: flex !important;
+            justify-content: flex-start !important;
+        }
+
+        #onPremiseForm, #cloudForm {
+            width: 50%;
+        }
+
+    /*Animate Auth Scheme*/
+        #authForms[data-selected='basic'] {
+            margin-left: 0%;
+        }
+
+        #authForms[data-selected='interactive'] {
+            margin-left: -100%;
+        }
+
+    /*Style Cloud Button*/
+        #cloudForm {
+            display: flex;
+            flex-direction: column;;
+            width: 50%;
+        }
+
+        #authorizeButton {
+            width: 15em;
+            height: 3em;
+            border-radius: .7em;
+            border-style: groove;
+            border-width: medium;
+            align-self: center;
+        }
+</style>

@@ -1,6 +1,13 @@
 # Orchestrator-RED
 A Node-RED wrapper for the UiPath Orchestrator API
 
+## Release Notes
+
+**v0.2**
+
+- Now supports OAuth 2.0 authentication in addition to Basic Auth. As of July 15, 2019, OAuth 2.0 is the only authentication scheme supported by platform.uipath.com. Cloud users must go through the interactive login flow only once while configuring this node.
+- BREAKING CHANGE: The URL field no longer defaults to https://platform.uipath.com. Connection nodes without a value in the URL field will fail.
+
 ## Install
 
 1. Install [Node.js](https://nodejs.org/en/download/) and [node-RED](https://nodered.org/docs/getting-started/installation).
@@ -15,10 +22,17 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 A configuration node that authenticates all calls made to Orchestrator and automatically refreshes API tokens when needed.
 
-* **URL**: *optional* The URL of your Orchestrator instance. Defaults to https://platform.uipath.com if left blank.
+**ON PREMISE**
+
+* **URL**: The URL of your Orchestrator instance.
 * **Tenant**: Your tenant
 * **Username**: Your username
 * **Password**: Your password. This value is encrypted when the flow is saved.
+
+**CLOUD**
+
+* **Account**: The name of your account at https://platform.uipath.com.
+* **Service**: *(AKA Tenant)* The Orchestrator instance to target.
 
 ### Request
 

@@ -7,7 +7,8 @@
   "main": "index.js",
   "dependencies": {
     "axios": "latest",
-    "https": "latest"
+    "https": "latest",
+    "node-red-admin": "^0.1.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
