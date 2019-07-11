@@ -1,13 +1,29 @@
 <script type="text/javascript">
-    function GetAuthCode() {
-
+    function base64URLEncode(buffer) {
+      return window.btoa(buffer)
+             .replace(/\+/g, '-')
+             .replace(/\//g, '_')
+             .replace(/=/g, '');
+    }
+     
+    async function sha256(str) {
+        return await crypto.subtle.digest("SHA-256", new TextEncoder("utf-8").encode(str));
     }
 
+    async function GetAuthCode() {
+        var cryptoResult = crypto.getRandomValues(new Uint8Array(32));
+        var verifier = base64URLEncode(cryptoResult);
+        var hash = await sha256(verifier);
+        var challenge = base64URLEncode(new Uint8Array(hash));
+
+        return { challenge: challenge, verifier: verifier };
+    }
+//TODO Add validations for required fields
     RED.nodes.registerType('orchestrator connection',{
         category: 'config',
         defaults: {
             name: {value:""},
-            url: {type: "text"}, //TODO Add validations for required fields
+            url: {type: "text"}, 
             ssl: {value:false},
             account: {type: "text"},
             tenant: {type: "text"},
@@ -39,7 +55,11 @@
             });
 
             // Set CSS slide animation
-            //TODO fix this $('#authForms').CSS('transition', 'margin-left 500ms ease-in-out');
+            setTimeout( () => 
+            {
+                $('#authForms').css('transition', 'margin-left 500ms ease-in-out');
+            });
+
         },
         oneditsave: function() {
             var node = this;
@@ -184,7 +204,7 @@
     /*Style Cloud Button*/
         #cloudForm {
             display: flex;
-            flex-direction: column;;
+            flex-direction: column;
             width: 50%;
         }
 

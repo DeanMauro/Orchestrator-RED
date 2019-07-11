@@ -2,7 +2,7 @@ const axios = require('axios');
 const https = require('https');
 
 module.exports = function(RED) {
-    "use strict"
+    "use strict";
 
     /*Connection Node functionality*/
     function OrchestratorConnectionNode(config) {
@@ -13,7 +13,7 @@ module.exports = function(RED) {
         //////////////////////////////
 
         this.account = config.account;
-        this.tenant = config.tenant ?? 'default';
+        this.tenant = config.tenant || 'default';
         this.user = config.user;
         this.token = null;
         this.expiration = Date.now();
@@ -21,8 +21,8 @@ module.exports = function(RED) {
                         withCredentials: true,
                         baseURL: (config.url).replace(/\/$/, ""),
                         headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (this.token || '')}
-                    }
-        this.standardError = `Orchestrator: Could not connect to ${this.tenant} at ${this.url || 'platform.uipath.com'}. Please check your credentials.`
+                    };
+        this.standardError = `Orchestrator: Could not connect to ${this.tenant} at ${this.url || 'platform.uipath.com'}. Please check your credentials.`;
 
 
         //////////////////////////////
@@ -38,7 +38,7 @@ module.exports = function(RED) {
 
         this.basicAuth = async function() {
             // Set up basic endpoint
-            let body = { method: 'post', 
+            let body = { method: 'post',
                          url: '/api/account/authenticate',
                          data: { tenancyName: this.tenant, 
                                  usernameOrEmailAddress: this.user, 
@@ -59,7 +59,7 @@ module.exports = function(RED) {
             // Set up standard OAuth endpoint
             let body = { method: 'post', 
                          url: 'https://account.uipath.com/oauth/token',
-                         client_id: '5v7PmPJL6FOGu6RB8I1Y4adLBhIwovQN'
+                         client_id: '5v7PmPJL6FOGu6RB8I1Y4adLBhIwovQN',
                          headers: {'Content-Type': 'application/json' }};
 
             // Choose whether to refresh access token or generate it for the first time
@@ -107,8 +107,8 @@ module.exports = function(RED) {
 
         if (config.ssl) this.spec['httpsAgent'] = new https.Agent({ rejectUnauthorized: false });   // Self-signed certs
 
-        this.getToken()
-            .catch( () => { this.error(this.standardError); });
+        //this.getToken()
+            //.catch( () => { this.error(this.standardError); });
     }
     
 
