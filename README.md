@@ -3,9 +3,9 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 ## Release Notes
 
-**v0.2**
+**v2.0.0**
 
-- Now supports OAuth 2.0 authentication in addition to Basic Auth. As of July 15, 2019, OAuth 2.0 is the only authentication scheme supported by platform.uipath.com. Cloud users must go through the interactive login flow only once while configuring this node.
+- Now supports both Cloud and On-Premise Orchestrators, which use different authentication schemes. For more information, see the official [UiPath documentation here](https://docs.uipath.com/orchestrator/reference#consuming-cloud-api).
 - BREAKING CHANGE: The URL field no longer defaults to https://platform.uipath.com. Connection nodes without a value in the URL field will fail.
 
 ## Install
@@ -31,8 +31,10 @@ A configuration node that authenticates all calls made to Orchestrator and autom
 
 **CLOUD**
 
-* **Account**: The name of your account at https://platform.uipath.com.
-* **Service**: *(AKA Tenant)* The Orchestrator instance to target.
+* **User Key**: The secret key that identifies your user.
+* **Account**: The logical name of your account at https://platform.uipath.com.
+* **Tenant**: The logical name of the tenant (AKA service) to which you want to connect. Each account may support multiple tenants
+* **Client ID**: The unique identifier of https://platform.uipath.com.
 
 ### Request
 
@@ -54,3 +56,9 @@ A convenience node that starts a Job.
 ## Output Messages
 
 The raw JSON output of each API call is included in the msg.payload in order to expose all details.
+
+
+## Next Version
+
+- Update the list of available calls in the Request node to the latest version of the API. 
+- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UiPath-OrganizationUnitId* in the parameter list.
