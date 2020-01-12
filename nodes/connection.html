@@ -1,53 +1,40 @@
 <script type="text/javascript">
-    function base64URLEncode(buffer) {
-      return window.btoa(buffer)
-             .replace(/\+/g, '-')
-             .replace(/\//g, '_')
-             .replace(/=/g, '');
-    }
-     
-    async function sha256(str) {
-        return await crypto.subtle.digest("SHA-256", new TextEncoder("utf-8").encode(str));
-    }
 
-    async function GetAuthCode() {
-        var cryptoResult = crypto.getRandomValues(new Uint8Array(32));
-        var verifier = base64URLEncode(cryptoResult);
-        var hash = await sha256(verifier);
-        var challenge = base64URLEncode(new Uint8Array(hash));
-
-        return { challenge: challenge, verifier: verifier };
-    }
 //TODO Add validations for required fields
     RED.nodes.registerType('orchestrator connection',{
         category: 'config',
         defaults: {
+            // Shared resources
             name: {value:""},
-            url: {type: "text"}, 
-            ssl: {value:false},
-            account: {type: "text"},
+            policy: {value:0},
             tenant: {type: "text"},
+
+            // On Premise props
+            url: {type: "text"}, 
             user: {type: "text"},
-            policy: {value: 0}
+            ssl: {value:false},
+
+            // Cloud props
+            account: {type: "text"},
+            clientId: {type: "text"}
         },
         credentials: {
             password: {type: "password"},
-            authcode: {type: "password"},
-            verifier: {type: "password"}
+            userKey: {type: "password"}
         },
         paletteLabel: 'connection',
         label: function() {
             if (this.name)
                 return this.name;
             else if (this.policy == 0)
-                return this.tenant||"default" +'/'+ this.user||"";
+                return (this.tenant||"default") +'/'+ this.user||"";
             else
-                return this.service||"platform" +'/'+ this.tenant||"";
+                return (this.account||"Cloud") +'/'+ this.tenant||"";
         },
-        oneditprepare: function() {
+        oneditprepare:  function() {
             // Set scheme
-            $("input[name=authScheme]").val([this.policy]);
-            $('#authForms').attr('data-selected', $(".authScheme[value="+this.policy+"]").attr('id'));
+            $("input[name=authScheme]").val([this.policy || 0]);
+            $('#authForms').attr('data-selected', $(".authScheme[value="+(this.policy || 0)+"]").attr('id'));
 
             // Set up scheme listener
             $('#authSchemesPill > label').click(function() {
@@ -58,6 +45,13 @@
             setTimeout( () => 
             {
                 $('#authForms').css('transition', 'margin-left 500ms ease-in-out');
+            });
+
+            // Bind tenant fields together so they share a property
+            var $inputs = $('#node-config-input-tenant, #tenantAlias');
+
+            $inputs.change(function(){
+                $inputs.val($(this).val());
             });
 
         },
@@ -77,10 +71,10 @@
     </div>
     <div class="form-row" id="authSchemesParent">
         <div id="authSchemesPill">
-            <input type="radio" class="authScheme" name="authScheme" value=0 id="basic" checked />
-            <label for="basic">On Premise</label>
-            <input type="radio" class="authScheme" name="authScheme" value=1 id="interactive" />
-            <label for="interactive">Cloud</label>
+            <input type="radio" class="authScheme" name="authScheme" value=0 id="onPrem" checked />
+            <label for="onPrem">On Premise</label>
+            <input type="radio" class="authScheme" name="authScheme" value=1 id="cloud" />
+            <label for="cloud">Cloud</label>
         </div>
     </div>
     <hr>
@@ -111,21 +105,28 @@
             </div>
             <div id="cloudForm">
                 <div class="form-row">
-                     <label for="node-config-input-account"><i class="fa fa-gear"></i> Account</label>
-                     <input type="text" id="node-config-input-account">
+                     <label for="node-config-input-userKey"><i class="fa fa-key"></i> User Key</label>
+                     <input type="text" id="node-config-input-userKey">
                  </div>
                 <div class="form-row">
-                     <label for="node-config-input-tenant"><i class="fa fa-users"></i> Service</label>
-                     <input type="text" id="node-config-input-tenant" placeholder="default">
+                     <label for="node-config-input-account"><i class="fa fa-users"></i> Account</label>
+                     <input type="text" id="node-config-input-account" placeholder="default">
                  </div>
-                <input id="authorizeButton" type="button" value="Authorize">
+                 <div class="form-row">
+                     <label for="tenantAlias"><i class="fa fa-user"></i> Tenant</label>
+                     <input type="text" id="tenantAlias" placeholder="default">
+                 </div>
+                 <div class="form-row">
+                     <label for="node-config-input-clientId"><i class="fa fa-id-card-o"></i> Client ID</label>
+                     <input type="text" id="node-config-input-clientId" placeholder="default">
+                 </div>
             </div>
         </div>
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="orchestrator connection">
-    <p>Logs in to Orchestrator with given <code>tenant</code>, <code>user</code>, and <code>password</code> or via interactive login.</p>
+    <p>Logs into On Premise Orchestrators with given <code>tenant</code>, <code>user</code>, and <code>password</code> or Cloud Orchestrators with <code>user key</code>, <code>account</code>, <code>tenant</code>, and <code>client ID</code>.</p>
 </script>
 
 <!-- CSS -->
@@ -193,11 +194,11 @@
         }
 
     /*Animate Auth Scheme*/
-        #authForms[data-selected='basic'] {
+        #authForms[data-selected='onPrem'] {
             margin-left: 0%;
         }
 
-        #authForms[data-selected='interactive'] {
+        #authForms[data-selected='cloud'] {
             margin-left: -100%;
         }
 
@@ -206,14 +207,5 @@
             display: flex;
             flex-direction: column;
             width: 50%;
-        }
-
-        #authorizeButton {
-            width: 15em;
-            height: 3em;
-            border-radius: .7em;
-            border-style: groove;
-            border-width: medium;
-            align-self: center;
         }
 </style>
