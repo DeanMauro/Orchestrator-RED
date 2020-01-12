@@ -8,6 +8,11 @@ A Node-RED wrapper for the UiPath Orchestrator API
 - Now supports both Cloud and On-Premise Orchestrators, which use different authentication schemes. For more information, see the official [UiPath documentation here](https://docs.uipath.com/orchestrator/reference#consuming-cloud-api).
 - BREAKING CHANGE: The URL field no longer defaults to https://platform.uipath.com. Connection nodes without a value in the URL field will fail.
 
+## Next Version
+
+- Update the list of available calls in the Request node to the latest version of the API. 
+- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UiPath-OrganizationUnitId* in the parameter list.
+
 ## Install
 
 1. Install [Node.js](https://nodejs.org/en/download/) and [node-RED](https://nodered.org/docs/getting-started/installation).
@@ -56,9 +61,3 @@ A convenience node that starts a Job.
 ## Output Messages
 
 The raw JSON output of each API call is included in the msg.payload in order to expose all details.
-
-
-## Next Version
-
-- Update the list of available calls in the Request node to the latest version of the API. 
-- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UiPath-OrganizationUnitId* in the parameter list.
