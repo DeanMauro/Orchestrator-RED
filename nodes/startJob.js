@@ -17,12 +17,12 @@ module.exports = function(RED) {
             var apiRelease = Api["Releases"]("GetAll"),
                 apiRobots  = Api["Robots"]("GetAll"),
                 apiJobs    = Api["Jobs"]("StartJobs");
-            var jobStrat   = ["Specific", "RobotCount", "All"];
+            var jobStrat   = ["Specific", "JobsCount", "All"];
             var jobParams  = { startInfo:
                                { ReleaseKey: "",
                                  Strategy: "",
                                  RobotIds: [],
-                                 NoOfRobots: 0,
+                                 JobsCount: 0,
                                  Source: "Manual" 
                                } 
                             }
@@ -79,7 +79,7 @@ module.exports = function(RED) {
             //<<<<<<<<<<<<START JOB>>>>>>>>>>>>
                 // Fill remaining params
                 jobParams['startInfo']['Strategy'] = jobStrat[config.policy];
-                jobParams['startInfo']['NoOfRobots'] = (config.policy == 1) ? config.number : 0;
+                jobParams['startInfo']['JobsCount'] = (config.policy == 1) ? config.number : 0;
 
                 // Start job
                 res = await connection.request({ method: apiJobs[0], headers: headers, url: apiJobs[1], data: jobParams});
