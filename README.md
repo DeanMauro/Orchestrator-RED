@@ -3,7 +3,7 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 ## Release Notes
 
-**v2.1.0**
+**v2.1.1**
 
 - The Request node now wraps the 2019.12 API, which includes several new calls.
 
