@@ -68,11 +68,11 @@
             <div class="form-row">
                 <div id="robotSchemes-wrapper">
                     <input type="radio" class="robotScheme" name="robotScheme" value=0 id="byName" checked />
-                    <label for="byName">Specific Bots</label>
+                    <label for="byName" class="autoWidth">Specific Bots</label>
                     <input type="radio" class="robotScheme" name="robotScheme" value=1 id="byNum" />
-                    <label for="byNum">No. of Bots</label>
+                    <label for="byNum" class="autoWidth">Dynamic Allocation</label>
                     <input type="radio" class="robotScheme" name="robotScheme" value=2 id="allBots" />
-                    <label for="allBots">All Bots</label>
+                    <label for="allBots" class="autoWidth">All Bots</label>
                 </div>
             </div>
             <div class="form-row" id="robotForm">
@@ -83,8 +83,13 @@
                     </div>
                 </div>
                 <div id="byNumber">
-                    <input id="node-input-number"></input>
-                    <input type="hidden" id="node-input-numberType">
+                    <div class="form-row centerSpaceChildren">
+                        <label class="autoWidth">Run the process </label>
+                        <input id="node-input-number"></input>
+                        <input type="hidden" id="node-input-numberType">
+                        <label class="autoWidth">time(s).</label>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -139,7 +144,7 @@
             // Robot Tab
             tabs.addTab({
                 id: "start-job-tab-robots",
-                label: "Robot(s)",
+                label: "Execution Target",
                 iconClass: "fa fa-user"
             });
 
@@ -356,7 +361,7 @@
 
         #byName, #byNumber {
             width: 45%;
-            padding: 0em 5%;
+            padding: 1% 5%;
         }
 
         #byNumber > .red-ui-typedInput-container {
@@ -378,5 +383,24 @@
 
         #robotForm[data-selected='allBots'] {
             margin-left: -200%;
+        }
+
+    /*General*/
+        .autoWidth {
+            width: auto !important;
+        }
+
+        .centerSpaceChildren {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .centerSpaceChildren > :first-child {
+            margin-right: 5px;
+        }
+
+        .centerSpaceChildren > :last-child {
+            margin-left: 5px;
         }
 </style>
