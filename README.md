@@ -3,6 +3,10 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 ## Release Notes
 
+**v2.1.0**
+
+- The Request node now wraps the 2019.12 API, which includes several new calls.
+
 **v2.0.0**
 
 - Now supports both Cloud and On-Premise Orchestrators, which use different authentication schemes. For more information, see the official [UiPath documentation here](https://docs.uipath.com/orchestrator/reference#consuming-cloud-api).
@@ -10,8 +14,7 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 ## Next Version
 
-- Update the list of available calls in the Request node to the latest version of the API. 
-- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UiPath-OrganizationUnitId* in the parameter list.
+- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UIPATH-OrganizationUnitId* in the parameter list.
 
 ## Install
 
