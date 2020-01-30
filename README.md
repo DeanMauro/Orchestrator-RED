@@ -14,7 +14,7 @@ A Node-RED wrapper for the UiPath Orchestrator API
 
 ## Next Version
 
-- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UIPATH-OrganizationUnitId* in the parameter list.
+- Add a **Folder** field to the Request and Start Job nodes for easier switching between folders/org units. Currently, users can specify a folder by putting *X-UiPath-OrganizationUnitId* in the parameter list. Note that the Default folder ID is different for every tenant. Use the Orchestrator API to retrieve this ID.
 
 ## Install
 
