@@ -5,7 +5,7 @@
     <p>A direct line to UiPath's Orchestrator.</p>
 
     <h3>Details</h3>
-        <p>This node may perform any action in Orchestrator. See the <a href="https://platform.uipath.com/swagger/ui/index#/">Orchestrator Swagger Doc</a> for a list of available actions & their parameter formatting requirements as well as the <a href="https://orchestrator.uipath.com/v2018.2/reference">Orchestrator API Guide</a> for ideas.</p>
+        <p>This node performs actions in Orchestrator and returns the raw API response. See the <a href="https://platform.uipath.com/techpartners/techpartners/swagger/ui/index">Orchestrator Swagger Doc</a> for a list of available actions & their parameter formatting requirements as well as the <a href="https://docs.uipath.com/orchestrator/reference">Orchestrator API Guide</a> for ideas.</p>
 
     <br>
 
@@ -14,7 +14,7 @@
     <dl class="message-properties">
         <h6>Open the node and fill in the following properties:</h6>
         <dt>Login<span class="property-type">String</span></dt>
-        <dd>Logs into your Orchestrator tenant so calls may be made.</dd>
+        <dd>Logs into your Orchestrator tenant so calls may be made. Options for On-Premise and Cloud Orchestrators are available.</dd>
         <dt>Category<span class="property-type">String</span></dt>
         <dd>The Orchestrator element with which you'd like to interact <i>(e.g. Robot, Job, Process)</i>.</dd>
         <dt>Action<span class="property-type">String</span></dt>
@@ -54,11 +54,17 @@
             <option value="Alerts">Alerts</option>
             <option value="Assets">Assets</option>
             <option value="AuditLogs">AuditLogs</option>
+            <option value="CredentialStores">CredentialStores</option>
             <option value="Environments">Environments</option>
+            <option value="Folders">Folders</option>
+            <option value="FoldersNavigation">FoldersNavigation</option>
+            <option value="GenericTasks">GenericTasks</option>
+            <option value="JobTriggers">JobTriggers</option>
             <option value="Jobs">Jobs</option>
             <option value="Libraries">Libraries</option>
             <option value="LicensesNamedUser">LicensesNamedUser</option>
             <option value="LicensesRuntime">LicensesRuntime</option>
+            <option value="Licensing">Licensing</option>
             <option value="Logs">Logs</option>
             <option value="Machines">Machines</option>
             <option value="MessageTemplates">MessageTemplates</option>
@@ -78,7 +84,11 @@
             <option value="Roles">Roles</option>
             <option value="Sessions">Sessions</option>
             <option value="Stats">Stats</option>
+            <option value="TaskCatalogs">TaskCatalogs</option>
+            <option value="TaskForms">TaskForms</option>
+            <option value="Tasks">Tasks</option>
             <option value="Tenants">Tenants</option>
+            <option value="Token">Token</option>
             <option value="Users">Users</option>
             <option value="Webhooks">Webhooks</option>
         </select>
@@ -95,6 +105,7 @@
             <!-- Assets -->
             <option value="GetAll" class="Assets">Get All</option>
             <option value="Create" class="Assets">Create</option>
+            <option value="GetById" class="Assets">Get By Id</option>
             <option value="Edit" class="Assets">Edit</option>
             <option value="Delete" class="Assets">Delete</option>
             <option value="GetRobotAssetByNameForRobotKey" class="Assets">Get Robot Asset By Name For Robot Key</option>
@@ -104,6 +115,16 @@
             <option value="GetAll" class="AuditLogs">Get All</option>
             <option value="GetAuditLogDetailsByAuditlogid" class="AuditLogs">Get Audit Log Details By Auditlogid</option>
             <option value="Reports" class="AuditLogs">Reports</option>
+            <!-- CredentialStores -->
+            <option value="GetAll" class="CredentialStores">Get All</option>
+            <option value="Create" class="CredentialStores">Create</option>
+            <option value="GetById" class="CredentialStores">Get By Id</option>
+            <option value="Edit" class="CredentialStores">Edit</option>
+            <option value="SetDefaultStoreForResourceType" class="CredentialStores">Set Default Store For Resource Type</option>
+            <option value="GetDefaultStoreForResourceTypeByResourcetype" class="CredentialStores">Get Default Store For Resource Type By Resourcetype</option>
+            <option value="GetAvailableCredentialStoreTypes" class="CredentialStores">Get Available Credential Store Types</option>
+            <option value="GetResourcesForCredentialStoreTypesByKeyAndResourcetype" class="CredentialStores">Get Resources For Credential Store Types By Key And Resourcetype</option>
+            <option value="Delete" class="CredentialStores">Delete</option>
             <!-- Environments -->
             <option value="GetAll" class="Environments">Get All</option>
             <option value="Create" class="Environments">Create</option>
@@ -115,12 +136,34 @@
             <option value="AddRobot" class="Environments">Add Robot</option>
             <option value="RemoveRobot" class="Environments">Remove Robot</option>
             <option value="SetRobots" class="Environments">Set Robots</option>
+            <!-- Folders -->
+            <option value="GetAll" class="Folders">Get All</option>
+            <option value="Create" class="Folders">Create</option>
+            <option value="GetById" class="Folders">Get By Id</option>
+            <option value="Edit" class="Folders">Edit</option>
+            <option value="Delete" class="Folders">Delete</option>
+            <option value="AssignUsers" class="Folders">Assign Users</option>
+            <option value="AssignDomainUser" class="Folders">Assign Domain User</option>
+            <option value="GetUsersForFolderByKeyAndIncludeinherited" class="Folders">Get Users For Folder By Key And Includeinherited</option>
+            <option value="RemoveUserFromFolder" class="Folders">Remove User From Folder</option>
+            <option value="GetAllRolesForUserByUsernameAndSkipAndTake" class="Folders">Get All Roles For User By Username And Skip And Take</option>
+            <!-- FoldersNavigation -->
+            <option value="GetAllFoldersForCurrentUser" class="FoldersNavigation">Get All Folders For Current User</option>
+            <option value="GetFoldersForCurrentUser" class="FoldersNavigation">Get Folders For Current User</option>
+            <option value="GetFolderNavigationContextForCurrentUser" class="FoldersNavigation">Get Folder Navigation Context For Current User</option>
+            <!-- GenericTasks -->
+            <option value="GetTaskData" class="GenericTasks">Get Task Data</option>
+            <option value="CreateTask" class="GenericTasks">Create Task</option>
+            <option value="CompleteTask" class="GenericTasks">Complete Task</option>
+            <!-- JobTriggers -->
+            <option value="GetAll" class="JobTriggers">Get All</option>
             <!-- Jobs -->
             <option value="GetAll" class="Jobs">Get All</option>
             <option value="GetById" class="Jobs">Get By Id</option>
             <option value="StartJobs" class="Jobs">Start Jobs</option>
             <option value="StopJob" class="Jobs">Stop Job</option>
             <option value="StopJobs" class="Jobs">Stop Jobs</option>
+            <option value="ResumeJob" class="Jobs">Resume Job</option>
             <!-- Libraries -->
             <option value="GetAll" class="Libraries">Get All</option>
             <option value="Delete" class="Libraries">Delete</option>
@@ -132,6 +175,9 @@
             <!-- LicensesRuntime -->
             <option value="GetLicensesRuntimeByRobottype" class="LicensesRuntime">Get Licenses Runtime By Robottype</option>
             <option value="ToggleEnabledByKey" class="LicensesRuntime">Toggle Enabled By Key</option>
+            <!-- Licensing -->
+            <option value="Acquire" class="Licensing">Acquire</option>
+            <option value="Release" class="Licensing">Release</option>
             <!-- Logs -->
             <option value="Create" class="Logs">Create</option>
             <option value="SubmitLogs" class="Logs">Submit Logs</option>
@@ -165,6 +211,7 @@
             <option value="Delete" class="ProcessSchedules">Delete</option>
             <option value="SetEnabled" class="ProcessSchedules">Set Enabled</option>
             <option value="GetRobotIdsForScheduleByKey" class="ProcessSchedules">Get Robot Ids For Schedule By Key</option>
+            <option value="Activate" class="ProcessSchedules">Activate</option>
             <!-- Processes -->
             <option value="GetAll" class="Processes">Get All</option>
             <option value="Delete" class="Processes">Delete</option>
@@ -180,6 +227,7 @@
             <option value="Edit" class="QueueDefinitions">Edit</option>
             <option value="Delete" class="QueueDefinitions">Delete</option>
             <option value="Reports" class="QueueDefinitions">Reports</option>
+            <option value="GetJsonSchemaDefinitionByIdAndJsonschematype" class="QueueDefinitions">Get Json Schema Definition By Id And Jsonschematype</option>
             <!-- QueueItemComments -->
             <option value="GetAll" class="QueueItemComments">Get All</option>
             <option value="Create" class="QueueItemComments">Create</option>
@@ -194,8 +242,10 @@
             <!-- QueueItems -->
             <option value="GetAll" class="QueueItems">Get All</option>
             <option value="GetById" class="QueueItems">Get By Id</option>
+            <option value="Edit" class="QueueItems">Edit</option>
             <option value="Delete" class="QueueItems">Delete</option>
             <option value="GetItemProcessingHistory" class="QueueItems">Get Item Processing History</option>
+            <option value="GetItemLastRetry" class="QueueItems">Get Item Last Retry</option>
             <option value="SetItemReviewStatus" class="QueueItems">Set Item Review Status</option>
             <option value="DeleteBulk" class="QueueItems">Delete Bulk</option>
             <option value="SetTransactionProgress" class="QueueItems">Set Transaction Progress</option>
@@ -203,11 +253,12 @@
             <option value="UnsetItemReviewer" class="QueueItems">Unset Item Reviewer</option>
             <option value="GetReviewers" class="QueueItems">Get Reviewers</option>
             <!-- QueueProcessingRecords -->
-            <option value="RetrieveLastDaysProcessingRecordsByDaysnoAndQueuedefinitionid" class="QueueProcessingRecords">Retrieve Last Days Processing Records</option>
+            <option value="RetrieveLastDaysProcessingRecordsByDaysnoAndQueuedefinitionid" class="QueueProcessingRecords">Retrieve Last Days Processing Records By Daysno And Queuedefinitionid</option>
             <option value="RetrieveQueuesProcessingStatus" class="QueueProcessingRecords">Retrieve Queues Processing Status</option>
             <!-- Queues -->
             <option value="StartTransaction" class="Queues">Start Transaction</option>
             <option value="AddQueueItem" class="Queues">Add Queue Item</option>
+            <option value="BulkAddQueueItems" class="Queues">Bulk Add Queue Items</option>
             <option value="SetTransactionResult" class="Queues">Set Transaction Result</option>
             <!-- Releases -->
             <option value="GetAll" class="Releases">Get All</option>
@@ -218,6 +269,7 @@
             <option value="Update" class="Releases">Update</option>
             <option value="UpdateToSpecificPackageVersion" class="Releases">Update To Specific Package Version</option>
             <option value="UpdateToLatestPackageVersion" class="Releases">Update To Latest Package Version</option>
+            <option value="UpdateToLatestPackageVersionBulk" class="Releases">Update To Latest Package Version Bulk</option>
             <option value="RollbackToPreviousReleaseVersion" class="Releases">Rollback To Previous Release Version</option>
             <!-- RobotLogs -->
             <option value="GetAll" class="RobotLogs">Get All</option>
@@ -229,6 +281,7 @@
             <option value="GetById" class="Robots">Get By Id</option>
             <option value="Edit" class="Robots">Edit</option>
             <option value="Delete" class="Robots">Delete</option>
+            <option value="Update" class="Robots">Update</option>
             <option value="GetMachineNameToLicenseKeyMappings" class="Robots">Get Machine Name To License Key Mappings</option>
             <option value="GetUsernames" class="Robots">Get Usernames</option>
             <option value="GetRobotsForProcessByProcessid" class="Robots">Get Robots For Process By Processid</option>
@@ -245,17 +298,40 @@
             <option value="SetUsers" class="Roles">Set Users</option>
             <!-- Sessions -->
             <option value="GetAll" class="Sessions">Get All</option>
+            <option value="GetGlobalSessions" class="Sessions">Get Global Sessions</option>
+            <option value="GetUsernames" class="Sessions">Get Usernames</option>
             <!-- Stats -->
             <option value="GetCountStats" class="Stats">Get Count Stats</option>
             <option value="GetSessionsStats" class="Stats">Get Sessions Stats</option>
             <option value="GetJobsStats" class="Stats">Get Jobs Stats</option>
             <option value="GetLicenseStats" class="Stats">Get License Stats</option>
+            <option value="GetConsumptionLicenseStats" class="Stats">Get Consumption License Stats</option>
+            <!-- TaskCatalogs -->
+            <option value="GetAll" class="TaskCatalogs">Get All</option>
+            <option value="GetById" class="TaskCatalogs">Get By Id</option>
+            <option value="CreateTaskCatalog" class="TaskCatalogs">Create Task Catalog</option>
+            <option value="UpdateTaskCatalog" class="TaskCatalogs">Update Task Catalog</option>
+            <!-- TaskForms -->
+            <option value="CreateFormTask" class="TaskForms">Create Form Task</option>
+            <option value="GetTaskForm" class="TaskForms">Get Task Form</option>
+            <option value="GetTaskData" class="TaskForms">Get Task Data</option>
+            <option value="CompleteTask" class="TaskForms">Complete Task</option>
+            <!-- Tasks -->
+            <option value="GetAll" class="Tasks">Get All</option>
+            <option value="GetById" class="Tasks">Get By Id</option>
+            <option value="AssignTasks" class="Tasks">Assign Tasks</option>
+            <option value="ReassignTasks" class="Tasks">Reassign Tasks</option>
+            <option value="UnassignTasks" class="Tasks">Unassign Tasks</option>
+            <option value="GetTaskUsersByOrganizationunitid" class="Tasks">Get Task Users By Organizationunitid</option>
             <!-- Tenants -->
             <option value="GetAll" class="Tenants">Get All</option>
             <option value="Create" class="Tenants">Create</option>
             <option value="GetById" class="Tenants">Get By Id</option>
             <option value="Delete" class="Tenants">Delete</option>
+            <option value="Update" class="Tenants">Update</option>
             <option value="SetActive" class="Tenants">Set Active</option>
+            <!-- Token -->
+            <option value="Create" class="Token">Create</option>
             <!-- Users -->
             <option value="GetAll" class="Users">Get All</option>
             <option value="Create" class="Users">Create</option>
@@ -268,10 +344,9 @@
             <option value="ToggleRole" class="Users">Toggle Role</option>
             <option value="ImportUsers" class="Users">Import Users</option>
             <option value="ToggleOrganizationUnit" class="Users">Toggle Organization Unit</option>
-            <option value="ChangePassword" class="Users">Change Password</option>
             <option value="SetActive" class="Users">Set Active</option>
             <option value="ChangeCulture" class="Users">Change Culture</option>
-            <option value="UpdatePassword" class="Users">Update Password</option>
+            <option value="ChangeUserCulture" class="Users">Change User Culture</option>
             <!-- Webhooks -->
             <option value="GetAll" class="Webhooks">Get All</option>
             <option value="Create" class="Webhooks">Create</option>
