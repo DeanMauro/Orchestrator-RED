@@ -31,6 +31,10 @@ module.exports = function(RED) {
                 // Ensure node has connection
                 Utilities.checkConnection(connection);
 
+                // Compose header with Folder ID
+                var folderHeader = await connection.getFolderId(config.folder);
+                headers = {...headers, ...folderHeader};
+
                 // Parse Process & Environment
                 proc = Utilities.convert({value: config.process, type: config.processType}, msg, node, RED);
                 environment = Utilities.convert({value: config.environment, type: config.environmentType}, msg, node, RED);
@@ -44,7 +48,8 @@ module.exports = function(RED) {
                     jobParams['startInfo']['InputArguments'] = JSON.stringify(params);
 
                 // Get headers
-                [params, headers] = Utilities.pullHeaders(params);
+                [params, headers] = Utilities.pullHeaders(params, headers);
+
 
             //<<<<<<<<<<<<RELEASE KEY>>>>>>>>>>>>
                 try {
@@ -53,6 +58,7 @@ module.exports = function(RED) {
                 } catch(e) {
                     throw (e instanceof TypeError) ? `Could not find a process named ${proc} in ${environment || "any environment"}` : e;
                 }
+
 
             //<<<<<<<<<<<<ROBOT IDS>>>>>>>>>>>>
                 // If NAMED POLICY
@@ -75,6 +81,7 @@ module.exports = function(RED) {
                     config.number = Utilities.convert({value: config.number, type: config.numberType}, msg, node, RED);
                     if (isNaN(config.number)) throw "Please specify a valid number of robots.";
                 }
+                
 
             //<<<<<<<<<<<<START JOB>>>>>>>>>>>>
                 // Fill remaining params

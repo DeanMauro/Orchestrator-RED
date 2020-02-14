@@ -9,7 +9,9 @@
     <h3>Properties</h3>
     <dl class="message-properties">
         <dt>Login<span class="property-type">String</span></dt>
-        <dd>Logs into your Orchestrator tenant.</dd>
+        <dd>The Orchestrator tenant in which to operate. Select an existing tenant from the dropdown menu or click the pencil button to add a new one. Options for On-Premise and Cloud Orchestrators are available.</dd>
+        <dt>Folder<span class="property-type">String</span></dt>
+        <dd>The name of the folder in which to operate. Indicate nested folders with backslashes (e.g. ParentFolder/ChildFolder). This feature is available as of Orchestrator 19.10.</dd>
         <dt>Process<span class="property-type">String</span></dt>
         <dd>The name & environment of the process to be run. As of v2018.3, jobs may also accept input parameters<sup>*</sup>.</dd>
         <dt>Robot(s)<span class="property-type">String</span></dt>
@@ -39,6 +41,10 @@
     <div class="form-row">
         <label for="node-input-connection"><i class="fa fa-sign-in"></i> Login</label>
         <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
+    </div>
+    <div class="form-row">
+        <label for="node-input-folder"><i class="fa fa-folder"></i> Folder</label>
+        <input type="text" id="node-input-folder" placeholder="Default">
     </div>
     <hr>
 
@@ -107,6 +113,7 @@
         defaults: {
             name: {value: ""},
             connection: {type:"orchestrator connection", required: true},
+            folder: {value: ""},
             process: {value: '', validate: RED.validators.typedInput("processType")},
             processType: {value: 'str'},
             environment: {value: '', validate: RED.validators.typedInput("environmentType")},

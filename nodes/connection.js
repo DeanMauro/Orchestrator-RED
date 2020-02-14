@@ -1,5 +1,6 @@
 const axios = require('axios');
 const Authentication = require('../lib/authentication.js');
+const Api = require('../lib/api.js');
 
 module.exports = function(RED) {
     "use strict";
@@ -13,6 +14,7 @@ module.exports = function(RED) {
         //////////////////////////////
         this.tenant = config.tenant || 'default';
         this.baseUrl = (config.url).replace(/\/$/, "") || `https://platform.uipath.com/${config.account}/${config.tenant}`;
+        this.folders = {};
         this.spec = {
                         withCredentials: true,
                         baseURL: this.baseUrl
@@ -42,6 +44,24 @@ module.exports = function(RED) {
             // Sanitize & Return
             ['request','config','headers'].forEach(k => {delete res[k]});
             return res;
+        }
+
+        this.getFolderId = async function(folderName) {
+            folderName = folderName || "Default";
+
+            if (!this.folders[folderName] || this.auth.isExpired()) {
+                var call = Api["Folders"]("GetAll");
+
+                try {
+                    var res = await this.request({ method: call[0], url: call[1] });
+
+                    res['data']['value'].forEach(x => this.folders[x.FullyQualifiedName] = x.Id);
+                } catch(e) {
+                    throw `Could not find a folder named '${folderName}' in tenant '${tenant}'. Please ensure that folders are available and that the folder name is spelled correctly.`;
+                }
+            }
+
+            return { 'X-UIPATH-OrganizationUnitId': this.folders[folderName] };
         }
 
 

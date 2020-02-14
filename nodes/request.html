@@ -14,7 +14,9 @@
     <dl class="message-properties">
         <h6>Open the node and fill in the following properties:</h6>
         <dt>Login<span class="property-type">String</span></dt>
-        <dd>Logs into your Orchestrator tenant so calls may be made. Options for On-Premise and Cloud Orchestrators are available.</dd>
+        <dd>The Orchestrator tenant in which to operate. Select an existing tenant from the dropdown menu or click the pencil button to add a new one. Options for On-Premise and Cloud Orchestrators are available.</dd>
+        <dt>Folder<span class="property-type">String</span></dt>
+        <dd>The name of the folder in which to operate. Indicate nested folders with backslashes (e.g. ParentFolder/ChildFolder). This feature is available as of Orchestrator 19.10.</dd>
         <dt>Category<span class="property-type">String</span></dt>
         <dd>The Orchestrator element with which you'd like to interact <i>(e.g. Robot, Job, Process)</i>.</dd>
         <dt>Action<span class="property-type">String</span></dt>
@@ -46,6 +48,10 @@
     <div class="form-row">
         <label for="node-input-connection"><i class="fa fa-sign-in"></i> Login</label>
         <input type="text" id="node-input-connection" placeholder="Orchestrator Login">
+    </div>
+    <div class="form-row">
+        <label for="node-input-folder"><i class="fa fa-folder"></i> Folder</label>
+        <input type="text" id="node-input-folder" placeholder="Default">
     </div>
     <hr>
     <div class="form-row">
@@ -378,6 +384,7 @@
             name: {value: ""},
             nameSet: {value: false},
             connection: {type:"orchestrator connection", required: true},
+            folder: {value: ""},
             category: {value:""},
             action: {value: ""},
             params: {value: [{key: "", type: "str", value: ""}]}

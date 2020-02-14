@@ -17,6 +17,10 @@ module.exports = function(RED) {
                 // Ensure node has connection
                 Utilities.checkConnection(connection);
 
+                // Compose header with Folder ID
+                var folderHeader = await connection.getFolderId(config.folder);
+                headers = {...headers, ...folderHeader};
+
                 // Convert fields provided through msg variable
                 if (config.category.startsWith("Msg")) {
                     config.category = msg.payload.category;
@@ -43,7 +47,7 @@ module.exports = function(RED) {
                 if (data && data["Id"]) data["Id"] = parseInt(data["Id"]);
 
                 // Get headers
-                [data, headers] = Utilities.pullHeaders(data);
+                [data, headers] = Utilities.pullHeaders(data, headers);
 
                 // Fire!
                 var res = await connection.request({ method: endpoint[0], 
