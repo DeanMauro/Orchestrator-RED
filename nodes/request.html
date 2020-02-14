@@ -366,9 +366,9 @@
         </select>
     </div>
 
-    <div class="form-row node-input-rule-container-row">
+    <div class="form-row node-input-rule-container-row uipathCustom">
         <label for="node-input-param-container">Parameters</label>
-        <ol id="node-input-param-container"></ol>
+        <ol id="node-input-param-container" class="uipathCustom"></ol>
     </div>
 </script>
 
@@ -492,12 +492,12 @@
 <!-- CSS -->
 <!-- Style, baby -->
 <style>
-    .rowKey, .red-ui-typedInput-container {
+    .uipathCustom .rowKey, .uipathCustom .red-ui-typedInput-container {
         width: 48% !important;
         margin-right: 2%; 
     }
 
-    .node-input-rule-container-row .red-ui-editableList-container {
+    .uipathCustom.node-input-rule-container-row .red-ui-editableList-container {
         height: auto !important;
         max-height: 16em !important;
     }
